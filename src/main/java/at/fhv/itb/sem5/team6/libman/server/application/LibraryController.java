@@ -35,6 +35,8 @@ public class LibraryController {
     }
 
     public List<MediaDTO> findAllMedia(String text) {
+        return null;
+        /*
         List<Media> result;
         try {
             MediaType type = MediaType.valueOf(text);
