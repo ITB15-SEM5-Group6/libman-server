@@ -1,6 +1,6 @@
 package at.fhv.itb.sem5.team6.libman.server.application;
 
-import at.fhv.itb.sem5.team6.libman.server.model.Media;
+import at.fhv.itb.sem5.team6.libman.server.application.mapper.MediaMapper;
 import at.fhv.itb.sem5.team6.libman.server.persistence.CustomerRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.MediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.PhysicalMediaRepository;
@@ -12,24 +12,26 @@ import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LibraryController {
 
     @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
     private MediaRepository mediaRepository;
+    @Autowired
+    private MediaMapper mediaMapper;
+
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
     private PhysicalMediaRepository physicalMediaRepository;
 
     public List<MediaDTO> findAllMedia() {
-        return castUp(mediaRepository.findAll());
+        return mediaMapper.modelsToDtos(mediaRepository.findAll());
     }
 
     public List<MediaDTO> findAllMedia(String text) {
@@ -40,19 +42,22 @@ public class LibraryController {
         } catch (IllegalArgumentException e) {
             result = mediaRepository.findDistinctByIdLikeOrTitleLikeAllIgnoreCase(text, text);
         }
-        return castUp(result);
+        return castUp(result);*/
     }
 
     public List<MediaDTO> findAllMedia(MediaType type) {
-        return castUp(mediaRepository.findDistinctByTypeEquals(type));
+        return null;
+        //return castUp(mediaRepository.findDistinctByTypeEquals(type));
     }
 
     public List<MediaDTO> findAllMedia(Availability availability) {
-        return castUp(mediaRepository.findAll().stream().filter(p -> physicalMediaRepository.findDistinctByAvailabilityEquals(availability).stream().anyMatch(o -> o.getMedia().equals(p))).collect(Collectors.toList()));
+        return null;
+        //return castUp(mediaRepository.findAll().stream().filter(p -> physicalMediaRepository.findDistinctByAvailabilityEquals(availability).stream().anyMatch(o -> o.getMedia().equals(p))).collect(Collectors.toList()));
     }
 
     public List<MediaDTO> findAllMedia(String text, MediaType type, Availability availability) {
-        List<MediaDTO> result = new ArrayList<>();
+        return null;
+        /*List<MediaDTO> result = new ArrayList<>();
         List<MediaDTO> result1 = findAllMedia(text);
         List<MediaDTO> result2 = findAllMedia(type);
         List<MediaDTO> result3 = findAllMedia(availability);
@@ -63,14 +68,16 @@ public class LibraryController {
             }
         }
 
-        return castUp(result);
+        return castUp(result);*/
     }
 
     public List<PhysicalMediaDTO> findAllPhysicalMedia() {
-        return castUp(physicalMediaRepository.findAll());
+        return null;
+        //return castUp(physicalMediaRepository.findAll());
     }
 
     public List<PhysicalMediaDTO> getPhysicalMedia(MediaDTO media) {
-        return castUp(physicalMediaRepository.findDistinctByMediaEquals(castDown(media)));
+        return null;
+        //return castUp(physicalMediaRepository.findDistinctByMediaEquals(castDown(media)));
     }
 }
