@@ -3,12 +3,15 @@ package at.fhv.itb.sem5.team6.libman.server;
 import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
+import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -58,19 +61,49 @@ public class ApplicationTests {
      * Should be in a comment
      */
     @Test
+    @Ignore
     public void insertionTest() {
 
-        //Customers and Medias already exist
+        int numberOfRandomEntries = 50;
+
+        // remove all medias
+        medias.findAll().forEach(media -> medias.delete(media));
+
+        // add medias
+        Media media = new Media();
+        media.setTitle("Harry Potter und der Stein der Weisen");
+        media.setType(MediaType.CD);
+        media.setIsbn("isbn");
+        media.setAuthor("author");
+        media.setPublisher("publisher");
+        media.setReleaseDate(Date.valueOf("22.2.2011"));
+        media.setTags("tags");
+        media.setGenre("genre");
+
+        medias.insert(media);
+
+        // TODO: insert all medias with additional data
+
+        //Media(title=Harry Potter und der Stein der Weisen, type=CD, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und die Kammer des Schreckens, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und der Gefangene von Askaban, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und der Feuerkelch, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und der Orden des Phönix, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und der Halbblutprinz, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        //Media(title=Harry Potter und die Heiligtümer des Todes, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
 
 
-        //physicalMedias
-        //insertTestDataPhysicalMedia(50);
+        // remove all and add new random physicalMedias
+        physicalMedias.findAll().forEach(physicalMedia -> physicalMedias.delete(physicalMedia));
+        insertTestDataPhysicalMedia(numberOfRandomEntries);
 
-        //reservations
-        //insertTestDataReservation(50);
+        // remove all and add new random reservations
+        reservations.findAll().forEach(reservation -> reservations.delete(reservation));
+        insertTestDataReservation(numberOfRandomEntries);
 
-        //lendings
-        //insertTestDataLending(50);
+        // remove all and add new random lendings
+        lendings.findAll().forEach(lending -> lendings.delete(lending));
+        insertTestDataLending(numberOfRandomEntries);
 
     }
 
