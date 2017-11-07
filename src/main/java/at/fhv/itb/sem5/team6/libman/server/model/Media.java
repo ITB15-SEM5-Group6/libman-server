@@ -1,6 +1,7 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutableMedia;
+import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

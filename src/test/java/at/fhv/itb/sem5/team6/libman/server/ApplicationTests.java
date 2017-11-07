@@ -2,6 +2,7 @@ package at.fhv.itb.sem5.team6.libman.server;
 
 import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class ApplicationTests {
 
         //reservations
         //insertTestDataReservation(50);
-        
+
         //lendings
         //insertTestDataLending(50);
 

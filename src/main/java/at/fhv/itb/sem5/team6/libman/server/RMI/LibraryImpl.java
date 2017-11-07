@@ -1,10 +1,10 @@
 package at.fhv.itb.sem5.team6.libman.server.RMI;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
-import at.fhv.itb.sem5.team6.libman.server.model.Availability;
-import at.fhv.itb.sem5.team6.libman.server.model.MediaType;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutablePhysicalMedia;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
+import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import at.fhv.itb.sem5.team6.libman.shared.interfaces.ILibrary;
 
 import java.rmi.RemoteException;

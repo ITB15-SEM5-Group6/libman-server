@@ -2,6 +2,7 @@ package at.fhv.itb.sem5.team6.libman.server.model;
 
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutablePhysicalMedia;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

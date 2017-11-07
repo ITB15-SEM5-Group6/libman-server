@@ -1,14 +1,14 @@
 package at.fhv.itb.sem5.team6.libman.server.application;
 
-import at.fhv.itb.sem5.team6.libman.server.model.Availability;
 import at.fhv.itb.sem5.team6.libman.server.model.Media;
-import at.fhv.itb.sem5.team6.libman.server.model.MediaType;
 import at.fhv.itb.sem5.team6.libman.server.persistence.CustomerRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.MediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.PhysicalMediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.ReservationRepository;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutablePhysicalMedia;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
+import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
