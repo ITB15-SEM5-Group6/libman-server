@@ -1,8 +1,8 @@
 package at.fhv.itb.sem5.team6.libman.server.RMI;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutablePhysicalMedia;
+import at.fhv.itb.sem5.team6.libman.shared.DTOs.MediaDTO;
+import at.fhv.itb.sem5.team6.libman.shared.DTOs.PhysicalMediaDTO;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import at.fhv.itb.sem5.team6.libman.shared.interfaces.ILibrary;
@@ -34,37 +34,37 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
 // Search
 
     @Override
-    public List<ImmutableMedia> findAllMedia() throws RemoteException {
+    public List<MediaDTO> findAllMedia() throws RemoteException {
         return libraryController.findAllMedia();
     }
 
     @Override
-    public List<ImmutableMedia> findAllMedia(String text) throws RemoteException {
+    public List<MediaDTO> findAllMedia(String text) throws RemoteException {
         return libraryController.findAllMedia(text);
     }
 
     @Override
-    public List<ImmutableMedia> findAllMedia(MediaType type) throws RemoteException {
+    public List<MediaDTO> findAllMedia(MediaType type) throws RemoteException {
         return libraryController.findAllMedia(type);
     }
 
     @Override
-    public List<ImmutableMedia> findAllMedia(Availability availability) throws RemoteException {
+    public List<MediaDTO> findAllMedia(Availability availability) throws RemoteException {
         return libraryController.findAllMedia(availability);
     }
 
     @Override
-    public List<ImmutableMedia> findAllMedia(String text, MediaType type, Availability availability) throws RemoteException {
+    public List<MediaDTO> findAllMedia(String text, MediaType type, Availability availability) throws RemoteException {
         return libraryController.findAllMedia(text, type, availability);
     }
 
     @Override
-    public List<ImmutablePhysicalMedia> findAllPhysicalMedia() {
+    public List<PhysicalMediaDTO> findAllPhysicalMedia() {
         return libraryController.findAllPhysicalMedia();
     }
 
     @Override
-    public List<ImmutablePhysicalMedia> getPhysicalMedia(ImmutableMedia media) {
+    public List<PhysicalMediaDTO> getPhysicalMedia(MediaDTO media) {
         return libraryController.getPhysicalMedia(media);
     }
 

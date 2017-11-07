@@ -5,8 +5,8 @@ import at.fhv.itb.sem5.team6.libman.server.persistence.CustomerRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.MediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.PhysicalMediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.ReservationRepository;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutablePhysicalMedia;
+import at.fhv.itb.sem5.team6.libman.shared.DTOs.MediaDTO;
+import at.fhv.itb.sem5.team6.libman.shared.DTOs.PhysicalMediaDTO;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class LibraryController implements Convertible {
+public class LibraryController {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -28,11 +28,11 @@ public class LibraryController implements Convertible {
     @Autowired
     private PhysicalMediaRepository physicalMediaRepository;
 
-    public List<ImmutableMedia> findAllMedia() {
+    public List<MediaDTO> findAllMedia() {
         return castUp(mediaRepository.findAll());
     }
 
-    public List<ImmutableMedia> findAllMedia(String text) {
+    public List<MediaDTO> findAllMedia(String text) {
         List<Media> result;
         try {
             MediaType type = MediaType.valueOf(text);
@@ -43,21 +43,21 @@ public class LibraryController implements Convertible {
         return castUp(result);
     }
 
-    public List<ImmutableMedia> findAllMedia(MediaType type) {
+    public List<MediaDTO> findAllMedia(MediaType type) {
         return castUp(mediaRepository.findDistinctByTypeEquals(type));
     }
 
-    public List<ImmutableMedia> findAllMedia(Availability availability) {
+    public List<MediaDTO> findAllMedia(Availability availability) {
         return castUp(mediaRepository.findAll().stream().filter(p -> physicalMediaRepository.findDistinctByAvailabilityEquals(availability).stream().anyMatch(o -> o.getMedia().equals(p))).collect(Collectors.toList()));
     }
 
-    public List<ImmutableMedia> findAllMedia(String text, MediaType type, Availability availability) {
-        List<ImmutableMedia> result = new ArrayList<>();
-        List<ImmutableMedia> result1 = findAllMedia(text);
-        List<ImmutableMedia> result2 = findAllMedia(type);
-        List<ImmutableMedia> result3 = findAllMedia(availability);
+    public List<MediaDTO> findAllMedia(String text, MediaType type, Availability availability) {
+        List<MediaDTO> result = new ArrayList<>();
+        List<MediaDTO> result1 = findAllMedia(text);
+        List<MediaDTO> result2 = findAllMedia(type);
+        List<MediaDTO> result3 = findAllMedia(availability);
 
-        for(ImmutableMedia im : result1){
+        for (MediaDTO im : result1) {
             if(result2.contains(im) && result3.contains(im)){
                 result.add(im);
             }
@@ -66,11 +66,11 @@ public class LibraryController implements Convertible {
         return castUp(result);
     }
 
-    public List<ImmutablePhysicalMedia> findAllPhysicalMedia() {
+    public List<PhysicalMediaDTO> findAllPhysicalMedia() {
         return castUp(physicalMediaRepository.findAll());
     }
 
-    public List<ImmutablePhysicalMedia> getPhysicalMedia(ImmutableMedia media) {
+    public List<PhysicalMediaDTO> getPhysicalMedia(MediaDTO media) {
         return castUp(physicalMediaRepository.findDistinctByMediaEquals(castDown(media)));
     }
 }

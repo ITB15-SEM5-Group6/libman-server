@@ -1,6 +1,5 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutableCustomer;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +15,7 @@ import java.io.Serializable;
 
 //MongoDb annnotation
 @Document
-public class Customer implements MutableCustomer, Identifiable<String>, Serializable {
+public class Customer implements Identifiable<String>, Serializable {
     @Id
     private String id;
     private String firstName;

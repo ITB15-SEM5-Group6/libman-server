@@ -1,6 +1,5 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutableMedia;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import lombok.Data;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import java.util.Date;
 
 //MongoDb annnotation
 @Document
-public class Media implements MutableMedia, Identifiable<String>, Serializable {
+public class Media implements Identifiable<String>, Serializable {
     @Id
     private String id;
     private String title;

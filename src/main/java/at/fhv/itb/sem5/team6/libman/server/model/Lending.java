@@ -1,8 +1,6 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableCustomer;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutablePhysicalMedia;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutableLending;
+import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +18,7 @@ import java.util.Date;
 
 //MongoDb annnotation
 @Document
-public class Lending implements MutableLending, Identifiable<String>, Serializable {
+public class Lending implements Identifiable<String>, Serializable {
 
     @Id
     private String id;
@@ -33,13 +31,4 @@ public class Lending implements MutableLending, Identifiable<String>, Serializab
     private String info;
     private LendingState state;
 
-    @Override
-    public void setPhysicalMedia(ImmutablePhysicalMedia physicalMedia) {
-        this.physicalMedia = (PhysicalMedia) physicalMedia;
-    }
-
-    @Override
-    public void setCustomer(ImmutableCustomer customer) {
-        this.customer = (Customer) customer;
-    }
 }

@@ -1,7 +1,5 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.immutable.ImmutableMedia;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.mutable.MutablePhysicalMedia;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +17,7 @@ import java.io.Serializable;
 
 //MongoDb annnotation
 @Document
-public class PhysicalMedia implements MutablePhysicalMedia, Identifiable<String>, Serializable {
+public class PhysicalMedia implements Identifiable<String>, Serializable {
     @Id
     private String id;
     private String index;
@@ -27,8 +25,4 @@ public class PhysicalMedia implements MutablePhysicalMedia, Identifiable<String>
     @DBRef //MongoDb uses this object as a reference
     private Media media;
 
-    @Override
-    public void setMedia(ImmutableMedia media) {
-        this.media = (Media) media;
-    }
 }
