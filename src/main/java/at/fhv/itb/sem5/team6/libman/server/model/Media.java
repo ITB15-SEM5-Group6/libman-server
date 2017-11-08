@@ -1,5 +1,6 @@
 package at.fhv.itb.sem5.team6.libman.server.model;
 
+import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import lombok.Data;
 import lombok.Getter;
@@ -21,5 +22,5 @@ public class Media {
     private String publisher;
     private Date releaseDate;
     private String tags;
-    private String genre;
+    private Genre genre;
 }
