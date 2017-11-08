@@ -18,7 +18,7 @@ import java.util.Date;
 
 //MongoDb annnotation
 @Document
-public class Lending implements Identifiable<String>, Serializable {
+public class Lending implements Serializable {
 
     @Id
     private String id;

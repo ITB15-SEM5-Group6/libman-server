@@ -17,7 +17,7 @@ import java.io.Serializable;
 
 //MongoDb annnotation
 @Document
-public class PhysicalMedia implements Identifiable<String>, Serializable {
+public class PhysicalMedia implements Serializable {
     @Id
     private String id;
     private String index;

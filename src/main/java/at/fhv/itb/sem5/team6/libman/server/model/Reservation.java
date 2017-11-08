@@ -17,7 +17,7 @@ import java.util.Date;
 
 //MongoDb annnotation
 @Document
-public class Reservation implements Identifiable<String>, Serializable {
+public class Reservation implements Serializable {
     @Id
     private String id;
     @DBRef //MongoDb uses this object as a reference

@@ -17,7 +17,7 @@ import java.util.Date;
 
 //MongoDb annnotation
 @Document
-public class Media implements Identifiable<String>, Serializable {
+public class Media implements Serializable {
     @Id
     private String id;
     private String title;

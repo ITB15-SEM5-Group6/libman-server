@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 //MongoDb annnotation
 @Document
-public class Customer implements Identifiable<String>, Serializable {
+public class Customer implements Serializable {
     @Id
     private String id;
     private String firstName;
