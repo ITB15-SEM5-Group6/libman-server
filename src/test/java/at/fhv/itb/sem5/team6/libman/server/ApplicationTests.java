@@ -4,6 +4,7 @@ import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
+import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -62,98 +63,289 @@ public class ApplicationTests {
      * Should be in a comment
      */
     @Test
-    @Ignore
-    public void insertionTest() {
+    public void reinsertDatabase() {
+        reinsertDatabase(50);
+    }
 
-        int numberOfRandomEntries = 50;
+    private void reinsertDatabase(int numberOfRandomRecords) {
+        reinsertMedia();
+        reinsertCustomer();
+        reinsertPhysicalMedia(numberOfRandomRecords);
+        reinsertReservation(numberOfRandomRecords);
+        reinsertLending(numberOfRandomRecords);
+    }
 
-        // remove all medias
-        medias.findAll().forEach(media -> medias.delete(media));
+    private void reinsertMedia() {
+
+        medias.deleteAll();
+
+        List<Media> mediasToAdd = new ArrayList<>();
 
         // add medias
         Media media = new Media();
         media.setTitle("Harry Potter und der Stein der Weisen");
-        media.setType(MediaType.CD);
-        media.setIsbn("isbn");
-        media.setAuthor("author");
-        media.setPublisher("publisher");
-        media.setReleaseDate(Date.valueOf("22.2.2011"));
-        media.setTags("tags");
-        media.setGenre(Genre.ACTION);
+        media.setType(MediaType.BOOK);
+        media.setIsbn("9783551354013");
+        media.setAuthor("J.K.Rowling");
+        media.setPublisher("Carlsen");
+        media.setReleaseDate(Date.valueOf("23.01.2005"));
+        media.setTags("Zauberei, Abenteuer, Schule, Hogwarts,jugendbuch, magie ,orden, ron, schule, tod, voldemort ,zauberei,zauberer");
+        media.setGenre(Genre.FANTASY);
 
-        medias.insert(media);
+        Media media1 = new Media();
+        media1.setTitle("City of Bones");
+        media1.setType(MediaType.BOOK);
+        media1.setIsbn("9783401502601");
+        media1.setAuthor("Cassandra Clare");
+        media1.setPublisher("Arena");
+        media1.setReleaseDate(Date.valueOf("05.01.2011"));
+        media1.setTags("Magie,liebe ,new york ,schattenjäger ,schattenwesen, simon, unterwelt, urban, fantasy, valentin, vampire, werwölfe");
+        media1.setGenre(Genre.FANTASY);
 
-        // TODO: insert all medias with additional data
+        Media media2 = new Media();
+        media2.setTitle("Die Tribute von Panem");
+        media2.setType(MediaType.BOOK);
+        media2.setIsbn("9783841501349");
+        media2.setAuthor("Suzanne Collins");
+        media2.setPublisher("Oetinger Taschenbuch");
+        media2.setReleaseDate(Date.valueOf("01.10.2012"));
+        media2.setTags("Kampf, Revolution, Spiele, Hungerspiele,Katniss,jugendbuch,kapitol,katniss,liebe,panem,peeta,spiele,suzanne collins,tod,tribute,überleben,zukunft");
+        media2.setGenre(Genre.FANTASY);
 
-        //Media(title=Harry Potter und der Stein der Weisen, type=CD, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und die Kammer des Schreckens, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und der Gefangene von Askaban, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und der Feuerkelch, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und der Orden des Phönix, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und der Halbblutprinz, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
-        //Media(title=Harry Potter und die Heiligtümer des Todes, type=BOOK, isbn=null, author=null, publisher=null, releaseDate=null, tags=null, Genre=null)
+        Media media3 = new Media();
+        media3.setTitle("Das Reich der Sieben Höfe – Flammen und Finsternis");
+        media3.setType(MediaType.BOOK);
+        media3.setIsbn(" 9783423761826");
+        media3.setAuthor(" 9783423761826");
+        media3.setPublisher("dtv Verlagsgesellschaft");
+        media3.setReleaseDate(Date.valueOf("04.08.2017"));
+        media3.setTags("high lady, high lord, hof der nacht,hybern, kessel, krieg, liebe, magie, rhysand, sarah j. maas, seelengefährte, tamlin");
+        media3.setGenre(Genre.FANTASY);
 
+        Media media4 = new Media();
+        media4.setTitle("Origin");
+        media4.setType(MediaType.BOOK);
+        media4.setIsbn("9783431039993");
+        media4.setAuthor("Dan Brown");
+        media4.setPublisher("Ehrenwirth");
+        media4.setReleaseDate(Date.valueOf("04.10.2017"));
+        media4.setTags("atheismus, barcelona, bilbao, dan brown, gaudi, geschichte, glaube, kirche, langdon, origin, rätsel, religion, robert langdon, spanien, supercomputer, thriller, ursuppe, winston, wissenschaft");
+        media4.setGenre(Genre.THRILLER);
 
-        // remove all and add new random physicalMedias
-        physicalMedias.findAll().forEach(physicalMedia -> physicalMedias.delete(physicalMedia));
-        insertTestDataPhysicalMedia(numberOfRandomEntries);
+        Media media5 = new Media();
+        media5.setTitle("Die Rückkehr der Wale");
+        media5.setType(MediaType.BOOK);
+        media5.setIsbn("9783426521809");
+        media5.setAuthor("Ehrenwirth");
+        media5.setPublisher("Knaur Taschenbuch");
+        media5.setReleaseDate(Date.valueOf("02.11.2017"));
+        media5.setTags("die rückkehr der wale, gefühle, insel, isabel, isabel morland, knaur, landschaft, legende, liebe, morlan, mystisch, natur, rückkehr, schottland, sehnsucht, selkie, wale, zweifel");
+        media5.setGenre(Genre.ROMANTIC);
 
-        // remove all and add new random reservations
-        reservations.findAll().forEach(reservation -> reservations.delete(reservation));
-        insertTestDataReservation(numberOfRandomEntries);
+        Media media6 = new Media();
+        media6.setTitle("Träume, die ich uns stehle");
+        media6.setType(MediaType.BOOK);
+        media6.setIsbn("9783426518977");
+        media6.setAuthor("Lily Oliver");
+        media6.setPublisher("Knaur Taschenbuch");
+        media6.setReleaseDate(Date.valueOf("02.11.2017"));
+        media6.setTags("gefühl,hoffnung,intensivstation,koma, krankenhaus, liebe, psychiatrie, psychische krankheit, traurigkeit, unterdrückung ,verzweiflung");
+        media6.setGenre(Genre.ROMANTIC);
 
-        // remove all and add new random lendings
-        lendings.findAll().forEach(lending -> lendings.delete(lending));
-        insertTestDataLending(numberOfRandomEntries);
+        Media media7 = new Media();
+        media7.setTitle("Nachtspiel");
+        media7.setType(MediaType.BOOK);
+        media7.setIsbn("3944676092");
+        media7.setAuthor("Catherine Shepherd ");
+        media7.setPublisher("Kafel Verlag");
+        media7.setReleaseDate(Date.valueOf("24. Oktober 2017"));
+        media7.setTags("Medizin, Julia , Tod, Frauenmörder, Leiche, Selbstmord, Kriminalkommisar, Serienkiller");
+        media7.setGenre(Genre.HORROR);
 
+        Media media8 = new Media();
+        media8.setTitle("Die Androidin - Auf der Flucht");
+        media8.setType(MediaType.BOOK);
+        media8.setIsbn(" 9783596297283");
+        media8.setAuthor("Joel Shepherd ");
+        media8.setPublisher("FISCHER Tor");
+        media8.setReleaseDate(Date.valueOf("27.04.2017"));
+        media8.setTags("androidin,flucht, joel, shepherd, tor");
+        media8.setGenre(Genre.SCIFI);
+
+        Media media9 = new Media();
+        media9.setTitle("Der letzte erste Kuss");
+        media9.setType(MediaType.BOOK);
+        media9.setIsbn("9783736304147");
+        media9.setAuthor("Bianca Iosivoni");
+        media9.setPublisher("LYX ein Imprint der Bastei Lübbe AG");
+        media9.setReleaseDate(Date.valueOf("26.10.2017"));
+        media9.setTags("alltag,anziehung, beste freunde, college, familie, freunde, freundschaft, gefühlschaos, große leidenschaft, high societey, kuss, liebe, liebesgeschichte, politik, roman ,studium");
+        media9.setGenre(Genre.ROMANTIC);
+
+        Media media10 = new Media();
+        media10.setTitle("Niemals");
+        media10.setType(MediaType.BOOK);
+        media10.setIsbn("9783518427569");
+        media10.setAuthor("Andreas Pflüger");
+        media10.setPublisher("Suhrkamp");
+        media10.setReleaseDate(Date.valueOf("09.10.2017"));
+        media10.setTags("james bond,jenny,aaron,marokko,marrakesch,menschen mit behinderungen,milliarden-erbe,schuld, spannung,thriller,vertrauen");
+        media10.setGenre(Genre.THRILLER);
+
+        Media media11 = new Media();
+        media11.setTitle("Unlocked");
+        media11.setType(MediaType.DVD);
+        media11.setIsbn("-");
+        media11.setAuthor("Michael Apted"); //Regie
+        media11.setPublisher("SquareOne"); //Studio
+        media11.setReleaseDate(Date.valueOf("2017"));
+        media11.setTags("Verschwörung, Politthriller, Terrorismus, Deutschland-Premiere, CIA, London, Anschlag");
+        media11.setGenre(Genre.THRILLER);
+
+        Media media12 = new Media();
+        media12.setTitle("PLÖTZLICH PAPA");
+        media12.setType(MediaType.DVD);
+        media12.setIsbn("-");
+        media12.setAuthor("Hugo Gélin");
+        media12.setPublisher("Universum Film");
+        media12.setReleaseDate(Date.valueOf("10.05.2017"));
+        media12.setTags("Frankreich, Single, Kristin, Gloria, Tochter, allein, London,Stuntman");
+        media12.setGenre(Genre.COMEDY);
+
+        Media media13 = new Media();
+        media13.setTitle("DIE GLORREICHEN SIEBEN");
+        media13.setType(MediaType.DVD);
+        media13.setIsbn("-");
+        media13.setAuthor("Antoine Fuqua");
+        media13.setPublisher("Sony Pictures");
+        media13.setReleaseDate(Date.valueOf("2016"));
+        media13.setTags("Rose Creek, Kopfgeldjäger, Revolverheld, Klassiker, Söldner, Bogue, Geld, gloreich, showdown");
+        media13.setGenre(Genre.WESTERN);
+
+        Media media14 = new Media();
+        media14.setTitle("Wüstenblume");
+        media14.setType(MediaType.DVD);
+        media14.setIsbn("-");
+        media14.setAuthor("Sherry Hormann");
+        media14.setPublisher("20th Century Fox");
+        media14.setReleaseDate(Date.valueOf("05.03.2010"));
+        media14.setTags("Afrika, Schicksal, Wüste, Waris, überleben, Vater, Zwangsheirat, Somalien, Nomadenmädchen,  ");
+        media14.setGenre(Genre.DRAMA);
+
+        Media media15 = new Media();
+        media15.setTitle("Ice Age 5");
+        media15.setType(MediaType.DVD);
+        media15.setIsbn("-");
+        media15.setAuthor("Galen T. Chu, Mike Thurmeier");
+        media15.setPublisher("20th Century Fox");
+        media15.setReleaseDate(Date.valueOf("\t10.11.2016"));
+        media15.setTags("Scrats,Eichel, Sid, Manni, Buck, Diego, Familie");
+        media15.setGenre(Genre.ADVENTURE);
+
+        Media media16 = new Media();
+        media16.setTitle("Poltergeist");
+        media16.setType(MediaType.DVD);
+        media16.setIsbn("-");
+        media16.setAuthor("Gil Kenan");
+        media16.setPublisher("Gil Kenan");
+        media16.setReleaseDate(Date.valueOf("22.10.2015"));
+        media16.setTags("Familie, Neuverfilmung, fürchten, Attacke, Tochter, Erscheinungen, Madison");
+        media16.setGenre(Genre.HORROR);
+
+        Media media17 = new Media();
+        media17.setTitle("TRANSFORMERS 5 - THE LAST KNIGHT");
+        media17.setType(MediaType.DVD);
+        media17.setIsbn("-");
+        media17.setAuthor("Michael Bay");
+        media17.setPublisher("Paramount");
+        media17.setReleaseDate(Date.valueOf("02.11.2017"));
+        media17.setTags("Spezies, Krieg, Menschen, Transformers, Optimus Prime, Erde, Rettung, Vergangenheit, Bumblebee, Lord Edmund Burton, Vivien, Izabella");
+        media17.setGenre(Genre.ACTION);
+
+        Media media18 = new Media();
+        media18.setTitle("DIE BUCHT");
+        media18.setType(MediaType.DVD);
+        media18.setIsbn("-");
+        media18.setAuthor("Louie Psihoyos");
+        media18.setPublisher("EuroVideo");
+        media18.setReleaseDate(Date.valueOf("05.03.2010"));
+        media18.setTags("Undercover-Mission, Geheimnis, Team, Spezialisten, Tauchern, Surfern, Bucht, Taiji, High-Tech");
+        media18.setGenre(Genre.DOCUMENTATION);
+
+        Media media19 = new Media();
+        media19.setTitle("Mädelstrip");
+        media19.setType(MediaType.DVD);
+        media19.setIsbn("-");
+        media19.setAuthor("Jonathan Levine");
+        media19.setPublisher("20th Century Fox");
+        media19.setReleaseDate(Date.valueOf("26.10.2017"));
+        media19.setTags("Urlaub, Emily, Linda, Mutter, Tochter, Weg, Dschungel");
+        media19.setGenre(Genre.COMEDY);
+
+        Media media20 = new Media();
+        media20.setTitle("MAZE RUNNER 1");
+        media20.setType(MediaType.DVD);
+        media20.setIsbn("-");
+        media20.setAuthor("Wes Ball");
+        media20.setPublisher("20th Century Fox");
+        media20.setReleaseDate(Date.valueOf("26.02.2015"));
+        media20.setTags("Die Auserwählten im Labyrinth, Erinnerung, Thomas, Labyrinth, Weg, Geheimnis");
+        media20.setGenre(Genre.SCIFI);
+
+        mediasToAdd.add(media);
+        mediasToAdd.add(media1);
+        mediasToAdd.add(media2);
+        mediasToAdd.add(media3);
+        mediasToAdd.add(media4);
+        mediasToAdd.add(media5);
+        mediasToAdd.add(media6);
+        mediasToAdd.add(media7);
+        mediasToAdd.add(media8);
+        mediasToAdd.add(media9);
+        mediasToAdd.add(media10);
+        mediasToAdd.add(media11);
+        mediasToAdd.add(media12);
+        mediasToAdd.add(media13);
+        mediasToAdd.add(media14);
+        mediasToAdd.add(media15);
+        mediasToAdd.add(media16);
+        mediasToAdd.add(media17);
+        mediasToAdd.add(media18);
+        mediasToAdd.add(media19);
+        mediasToAdd.add(media20);
+
+        medias.save(mediasToAdd);
     }
 
-    private void insertTestDataPhysicalMedia(int numberOfEntries) {
+    private void reinsertCustomer() {
+        // TODO: implement
+    }
 
-        List<PhysicalMedia> list = new ArrayList<>();
-        //relation to media
+    private void reinsertPhysicalMedia(int numberOfRandomRecords) {
+
+        physicalMedias.deleteAll();
+
         List<Media> m = medias.findAll();
 
-        for(int i = 0; i < numberOfEntries; i++) {
-            PhysicalMedia item = new PhysicalMedia();
+        List<PhysicalMedia> list = new ArrayList<>(m.size()*numberOfRandomRecords);
+        //relation to media
+        m.forEach(media -> {
+            for(int i = 1; i <= numberOfRandomRecords; i++) {
+                PhysicalMedia item = new PhysicalMedia();
 
-            int randomMedia = r.nextInt(m.size());
+                item.setAvailability(r.nextBoolean() ? Availability.AVAILABLE : Availability.NOT_AVAILABLE);
+                item.setMedia(media);
+                item.setIndex(media.getIsbn()+"-"+i);
 
-            Availability availability = randomMedia% 2 == 0 ? Availability.AVAILABLE : Availability.NOT_AVAILABLE;
-            Media media = m.get(randomMedia);
+                list.add(item);
+            }
+        });
 
-            item.setAvailability(availability);
-            item.setMedia(media);
-
-            list.add(item);
-        }
         physicalMedias.save(list);
     }
 
-
-    private void insertTestDataReservation(int numberOfEntries){
-
-        List<Reservation> list = new ArrayList<>();
-
-        //relation to customer and media
-        List<Customer> c = customers.findAll();
-        List<Media> m = medias.findAll();
-
-        for(int i = 0; i < numberOfEntries; i++) {
-            Reservation item = new Reservation();
-
-            int randomCustomer = r.nextInt(c.size());
-            int randomMedia = r.nextInt(m.size());
-
-            item.setCustomer(c.get(randomCustomer));
-            item.setMedia(m.get(randomMedia));
-
-            list.add(item);
-        }
-        reservations.save(list);
-    }
-
-    private void insertTestDataLending(int numberOfEntries){
+    private void reinsertLending(int numberOfRandomRecords) {
+        lendings.deleteAll();
 
         List<Lending> list = new ArrayList<>();
 
@@ -161,7 +353,7 @@ public class ApplicationTests {
         List<Customer> c = customers.findAll();
         List<PhysicalMedia> p = physicalMedias.findAll();
 
-        for(int i = 0; i < numberOfEntries; i++) {
+        for(int i = 0; i < numberOfRandomRecords; i++) {
             Lending item = new Lending();
 
             int randomCustomer = r.nextInt(c.size());
@@ -169,10 +361,41 @@ public class ApplicationTests {
 
             item.setCustomer(c.get(randomCustomer));
             item.setPhysicalMedia(p.get(randomPhysicalMedia));
+            item.setLendDate(new Date(System.currentTimeMillis()-i));
+            item.setExtentions(r.nextInt(3));
+            item.setInfo("Info =)");
+            item.setState(r.nextBoolean() ? LendingState.LENT : LendingState.RETURNED);
 
             list.add(item);
         }
 
         lendings.save(list);
+    }
+
+    private void reinsertReservation(int numberOfRandomRecords) {
+        reservations.deleteAll();
+
+        List<Reservation> list = new ArrayList<>();
+
+        //relation to customer and media
+        List<Customer> c = customers.findAll();
+        List<Media> m = medias.findAll();
+
+        for(int i = 0; i < numberOfRandomRecords; i++) {
+            Reservation item = new Reservation();
+
+            int randomCustomer = r.nextInt(c.size());
+            int randomMedia = r.nextInt(m.size());
+            Date date = new Date(System.currentTimeMillis());
+            Date newDate = new Date(date.getTime()-r.nextLong());
+
+            item.setCustomer(c.get(randomCustomer));
+            item.setMedia(m.get(randomMedia));
+            item.setDate(newDate);
+
+            list.add(item);
+        }
+
+        reservations.save(list);
     }
 }
