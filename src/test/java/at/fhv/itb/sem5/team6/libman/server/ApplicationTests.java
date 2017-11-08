@@ -3,6 +3,7 @@ package at.fhv.itb.sem5.team6.libman.server;
 import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -78,7 +79,7 @@ public class ApplicationTests {
         media.setPublisher("publisher");
         media.setReleaseDate(Date.valueOf("22.2.2011"));
         media.setTags("tags");
-        media.setGenre("genre");
+        media.setGenre(Genre.ACTION);
 
         medias.insert(media);
 
