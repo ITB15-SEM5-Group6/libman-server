@@ -24,5 +24,4 @@ public class PhysicalMedia implements Serializable {
     private Availability availability;
     @DBRef //MongoDb uses this object as a reference
     private Media media;
-
 }

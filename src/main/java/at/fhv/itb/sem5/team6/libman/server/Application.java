@@ -9,18 +9,18 @@ import org.springframework.remoting.rmi.RmiServiceExporter;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	@Bean
-	RmiServiceExporter exporter(ILibraryFactory implementation) {
-		Class<ILibraryFactory> serviceInterface = ILibraryFactory.class;
-		RmiServiceExporter exporter = new RmiServiceExporter();
-		exporter.setServiceInterface(serviceInterface);
-		exporter.setService(implementation);
-		exporter.setServiceName("LibraryFactory");
-		exporter.setRegistryPort(1099);
-		return exporter;
-	}
+    @Bean
+    RmiServiceExporter exporter(ILibraryFactory implementation) {
+        Class<ILibraryFactory> serviceInterface = ILibraryFactory.class;
+        RmiServiceExporter exporter = new RmiServiceExporter();
+        exporter.setServiceInterface(serviceInterface);
+        exporter.setService(implementation);
+        exporter.setServiceName("LibraryFactory");
+        exporter.setRegistryPort(1099);
+        return exporter;
+    }
 }

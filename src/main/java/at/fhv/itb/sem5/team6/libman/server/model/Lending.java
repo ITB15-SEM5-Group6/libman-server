@@ -19,7 +19,6 @@ import java.util.Date;
 //MongoDb annnotation
 @Document
 public class Lending implements Serializable {
-
     @Id
     private String id;
     @DBRef //MongoDb uses this object as a reference
@@ -30,5 +29,4 @@ public class Lending implements Serializable {
     private Integer extentions;
     private String info;
     private LendingState state;
-
 }

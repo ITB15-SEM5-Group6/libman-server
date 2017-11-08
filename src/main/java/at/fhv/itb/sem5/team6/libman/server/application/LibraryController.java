@@ -1,6 +1,9 @@
 package at.fhv.itb.sem5.team6.libman.server.application;
 
+import at.fhv.itb.sem5.team6.libman.server.application.mapper.CustomerMapper;
 import at.fhv.itb.sem5.team6.libman.server.application.mapper.MediaMapper;
+import at.fhv.itb.sem5.team6.libman.server.application.mapper.PhysicalMediaMapper;
+import at.fhv.itb.sem5.team6.libman.server.application.mapper.ReservationMapper;
 import at.fhv.itb.sem5.team6.libman.server.persistence.CustomerRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.MediaRepository;
 import at.fhv.itb.sem5.team6.libman.server.persistence.PhysicalMediaRepository;
@@ -24,11 +27,18 @@ public class LibraryController {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
+    private ReservationMapper reservationMapper;
+
+    @Autowired
     private PhysicalMediaRepository physicalMediaRepository;
+    @Autowired
+    private PhysicalMediaMapper physicalMediaMapper;
 
     public List<MediaDTO> findAllMedia() {
         return mediaMapper.toDTOs(mediaRepository.findAll());

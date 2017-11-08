@@ -5,11 +5,12 @@
 
     <groupId>at.fhv.itb.sem5.team6</groupId>
     <artifactId>libman-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <name>libman-server</name>
     <description>Library Manager built with Spring Boot</description>
+    <url>https://github.com/ITB15-SEM5-Group6/libman-server</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,33 +19,27 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <modules>
-        <module>shared</module>
-    </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <org.lombok.version>1.16.18</org.lombok.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- shared project -->
         <dependency>
-            <groupId>at.fhv.itb.sem5.team6</groupId>
+            <groupId>com.github.ITB15-SEM5-Group6</groupId>
             <artifactId>libman-shared</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <!-- MapStruct for mapping -->
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${org.mapstruct.version}</version>
+            <version>0.1</version>
         </dependency>
 
         <!-- Lombok for getters, setters, constructors -->
@@ -53,6 +48,19 @@
             <artifactId>lombok</artifactId>
             <version>${org.lombok.version}</version>
             <optional>true</optional>
+        </dependency>
+
+        <!-- MapStruct for mapping -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Spring dependencies -->
@@ -69,6 +77,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
@@ -81,7 +90,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
     </build>
 
 </project>

@@ -25,5 +25,4 @@ public class Reservation implements Serializable {
     @DBRef //MongoDb uses this object as a reference
     private Customer customer;
     private Date date;
-
 }
