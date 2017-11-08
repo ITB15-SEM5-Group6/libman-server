@@ -31,7 +31,7 @@ public class LibraryController {
     private PhysicalMediaRepository physicalMediaRepository;
 
     public List<MediaDTO> findAllMedia() {
-        return mediaMapper.modelsToDtos(mediaRepository.findAll());
+        return mediaMapper.toDTOs(mediaRepository.findAll());
     }
 
     public List<MediaDTO> findAllMedia(String text) {
