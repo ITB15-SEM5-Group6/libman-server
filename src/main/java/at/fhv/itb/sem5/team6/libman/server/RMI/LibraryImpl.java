@@ -4,6 +4,7 @@ import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.MediaDTO;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.PhysicalMediaDTO;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import at.fhv.itb.sem5.team6.libman.shared.interfaces.ILibrary;
 
@@ -32,30 +33,9 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
     }
 
 // Search
-
     @Override
-    public List<MediaDTO> findAllMedia() throws RemoteException {
-        return libraryController.findAllMedia();
-    }
-
-    @Override
-    public List<MediaDTO> findAllMedia(String text) throws RemoteException {
-        return libraryController.findAllMedia(text);
-    }
-
-    @Override
-    public List<MediaDTO> findAllMedia(MediaType type) throws RemoteException {
-        return libraryController.findAllMedia(type);
-    }
-
-    @Override
-    public List<MediaDTO> findAllMedia(Availability availability) throws RemoteException {
-        return libraryController.findAllMedia(availability);
-    }
-
-    @Override
-    public List<MediaDTO> findAllMedia(String text, MediaType type, Availability availability) throws RemoteException {
-        return libraryController.findAllMedia(text, type, availability);
+    public List<MediaDTO> findAllMedia(String text, Genre genre, MediaType mediaType, Availability availability) throws RemoteException {
+        return libraryController.findAllMedia(text, genre, mediaType, availability);
     }
 
     @Override
