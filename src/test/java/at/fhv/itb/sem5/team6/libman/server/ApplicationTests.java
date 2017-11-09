@@ -359,7 +359,7 @@ public class ApplicationTests {
             item.setCustomer(c.get(randomCustomer));
             item.setPhysicalMedia(p.get(randomPhysicalMedia));
             item.setLendDate(new Date(System.currentTimeMillis()-i));
-            item.setExtentions(r.nextInt(3));
+            item.setExtensions(r.nextInt(3));
             item.setInfo("Info =)");
             item.setState(r.nextBoolean() ? LendingState.LENT : LendingState.RETURNED);
 

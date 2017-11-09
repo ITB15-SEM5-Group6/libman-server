@@ -107,7 +107,7 @@ public class LibraryController {
             lending.setCustomer(customer);
             lending.setLendDate(new Date());
             lending.setState(LendingState.LENT);
-            lending.setExtentions(0);
+            lending.setExtensions(0);
 
             // save new object
             lendingRepository.save(lending);
@@ -135,10 +135,10 @@ public class LibraryController {
 
     public void extendLending(LendingDTO lendingDTO) {
         Lending lending = lendingMapper.toModel(lendingDTO);
-        if (lending.getExtentions() > 1) {
+        if (lending.getExtensions() > 1) {
             throw new IllegalArgumentException("No more extensions possible");
         } else {
-            lending.setExtentions(lending.getExtentions() + 1);
+            lending.setExtensions(lending.getExtensions() + 1);
             lendingRepository.save(lending);
         }
     }

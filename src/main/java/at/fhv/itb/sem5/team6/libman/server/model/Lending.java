@@ -26,7 +26,7 @@ public class Lending implements Serializable {
     @DBRef //MongoDb uses this object as a reference
     private Customer customer;
     private Date lendDate;
-    private Integer extentions;
+    private Integer extensions;
     private String info;
     private LendingState state;
 }

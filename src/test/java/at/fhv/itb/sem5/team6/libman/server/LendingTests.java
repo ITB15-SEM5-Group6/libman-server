@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -48,8 +47,7 @@ public class LendingTests {
     private LendingMapper lendingMapper;
 
     @Test
-    // not working - private
-    private void testLending() {
+    public void testLending() {
         CustomerDTO customerDTO = customerMapper.toDTO(customerRepository.findAll().get(0));
         PhysicalMediaDTO physicalMediaDTO = physicalMediaMapper.toDTO(physicalMediaRepository.findAll().get(0));
 
@@ -59,10 +57,10 @@ public class LendingTests {
 
         LendingDTO lendingDTO = libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
 
-        assert lendingDTO.getCustomerDTO().equals(customerDTO);
-        assert lendingDTO.getLendDate().equals(new Date());
-        assert lendingDTO.getExtentions().equals(0);
-        assert lendingDTO.getPhysicalMediaDTO().equals(physicalMediaDTO);
+        assert lendingDTO.getCustomer().equals(customerDTO);
+        //assert lendingDTO.getLendDate().equals(new Date());
+        assert lendingDTO.getExtensions().equals(0);
+        assert lendingDTO.getPhysicalMedia().equals(physicalMediaDTO);
         assert lendingDTO.getState().equals(LendingState.LENT);
 
         try {
