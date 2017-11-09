@@ -1,8 +1,7 @@
 package at.fhv.itb.sem5.team6.libman.server.RMI;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.MediaDTO;
-import at.fhv.itb.sem5.team6.libman.shared.DTOs.PhysicalMediaDTO;
+import at.fhv.itb.sem5.team6.libman.shared.DTOs.*;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
@@ -49,6 +48,30 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
     }
 
 // Reservation
+@Override
+public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) throws RemoteException {
+    return libraryController.reserveMedia(mediaDTO, customerDTO);
+}
+
+    @Override
+    public void cancelReservation(ReservationDTO reservationDTO) throws RemoteException {
+        libraryController.cancelReservation(reservationDTO);
+    }
 
 // Lending
+@Override
+public LendingDTO lendPhysicalMedia(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) throws RemoteException {
+    return libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
+}
+
+    @Override
+    public void returnPhysicalMedia(PhysicalMediaDTO physicalMediaDTO) throws RemoteException {
+        libraryController.returnPhysicalMedia(physicalMediaDTO);
+    }
+
+    @Override
+    public void extendLending(LendingDTO lendingDTO) throws RemoteException {
+        libraryController.extendLending(lendingDTO);
+    }
+
 }

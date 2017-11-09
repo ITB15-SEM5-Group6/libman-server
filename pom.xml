@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.github.ITB15-SEM5-Group6</groupId>
             <artifactId>libman-shared</artifactId>
-            <version>0.3</version>
+            <version>0.4</version>
         </dependency>
 
         <!-- Lombok for getters, setters, constructors -->

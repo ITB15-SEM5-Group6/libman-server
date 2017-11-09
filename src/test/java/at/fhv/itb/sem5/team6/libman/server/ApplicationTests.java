@@ -6,7 +6,6 @@ import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class ApplicationTests {
 
     private Random r = new Random();
 
-
     @Autowired
     private ReservationRepository reservations;
 
@@ -38,7 +36,6 @@ public class ApplicationTests {
 
     @Autowired
     private MediaRepository medias;
-
     @Autowired
     private PhysicalMediaRepository physicalMedias;
 
@@ -46,8 +43,8 @@ public class ApplicationTests {
     private LendingRepository lendings;
 
 
-	@Test
-	public void contextLoads() {
+    @Test
+    public void contextLoads() {
         Customer customer = customers.findByLastName("Dengg").get(0);
         Media media = medias.findAll().stream().filter(media1 -> media1.getTitle().contains("Feuerkelch")).collect(Collectors.toList()).get(0);
 
@@ -398,4 +395,5 @@ public class ApplicationTests {
 
         reservations.save(list);
     }
+
 }
