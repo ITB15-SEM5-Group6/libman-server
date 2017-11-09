@@ -11,8 +11,12 @@ import java.rmi.RemoteException;
 @Service
 public class LibraryFactoryImpl implements ILibraryFactory {
 
+    private final LibraryController libraryController;
+
     @Autowired
-    private LibraryController libraryController;
+    public LibraryFactoryImpl(LibraryController libraryController) {
+        this.libraryController = libraryController;
+    }
 
     public ILibrary create() throws RemoteException {
         return new LibraryImpl(libraryController);

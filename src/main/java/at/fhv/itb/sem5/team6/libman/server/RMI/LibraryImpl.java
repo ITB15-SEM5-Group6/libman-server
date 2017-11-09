@@ -33,7 +33,7 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
 
 // Search
     @Override
-    public List<MediaDTO> findAllMedia(String text, Genre genre, MediaType mediaType, Availability availability) throws RemoteException {
+    public List<MediaDTO> findAllMedia(String text, Genre genre, MediaType mediaType, Availability availability) {
         return libraryController.findAllMedia(text, genre, mediaType, availability);
     }
 
@@ -49,28 +49,28 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
 
 // Reservation
 @Override
-public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) throws RemoteException {
+public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) {
     return libraryController.reserveMedia(mediaDTO, customerDTO);
 }
 
     @Override
-    public void cancelReservation(ReservationDTO reservationDTO) throws RemoteException {
+    public void cancelReservation(ReservationDTO reservationDTO) {
         libraryController.cancelReservation(reservationDTO);
     }
 
 // Lending
 @Override
-public LendingDTO lendPhysicalMedia(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) throws RemoteException {
+public LendingDTO lendPhysicalMedia(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) {
     return libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
 }
 
     @Override
-    public void returnPhysicalMedia(PhysicalMediaDTO physicalMediaDTO) throws RemoteException {
+    public void returnPhysicalMedia(PhysicalMediaDTO physicalMediaDTO) {
         libraryController.returnPhysicalMedia(physicalMediaDTO);
     }
 
     @Override
-    public void extendLending(LendingDTO lendingDTO) throws RemoteException {
+    public void extendLending(LendingDTO lendingDTO) {
         libraryController.extendLending(lendingDTO);
     }
 
