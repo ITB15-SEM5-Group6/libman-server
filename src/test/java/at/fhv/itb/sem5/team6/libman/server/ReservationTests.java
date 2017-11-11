@@ -20,26 +20,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-
 public class ReservationTests extends EmbeddedMongoUnitTest {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    protected CustomerRepository customerRepository;
     @Autowired
-    private CustomerMapper customerMapper;
+    protected CustomerMapper customerMapper;
 
     @Autowired
-    private MediaRepository mediaRepository;
+    protected MediaRepository mediaRepository;
     @Autowired
-    private MediaMapper mediaMapper;
+    protected MediaMapper mediaMapper;
 
     @Autowired
-    private ReservationRepository reservationRepository;
+    protected ReservationRepository reservationRepository;
     @Autowired
-    private ReservationMapper reservationMapper;
+    protected ReservationMapper reservationMapper;
 
     @Autowired
-    private LibraryController libraryController;
+    protected LibraryController libraryController;
 
     @Before
     public void setUp() {
