@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -21,8 +21,7 @@ import java.util.stream.Collectors;
 /*
  * in case of empty test failures, make sure that the package of spring application and spring test are equal!
  */
-
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class ApplicationTests {
 
@@ -36,6 +35,7 @@ public class ApplicationTests {
 
     @Autowired
     private MediaRepository medias;
+
     @Autowired
     private PhysicalMediaRepository physicalMedias;
 
@@ -324,15 +324,15 @@ public class ApplicationTests {
 
         List<Media> m = medias.findAll();
 
-        List<PhysicalMedia> list = new ArrayList<>(m.size()*numberOfRandomRecords);
+        List<PhysicalMedia> list = new ArrayList<>(m.size() * numberOfRandomRecords);
         //relation to media
         m.forEach(media -> {
-            for(int i = 1; i <= numberOfRandomRecords; i++) {
+            for (int i = 1; i <= numberOfRandomRecords; i++) {
                 PhysicalMedia item = new PhysicalMedia();
 
                 item.setAvailability(r.nextBoolean() ? Availability.AVAILABLE : Availability.NOT_AVAILABLE);
                 item.setMedia(media);
-                item.setIndex(media.getIsbn()+"-"+i);
+                item.setIndex(media.getIsbn() + "-" + i);
 
                 list.add(item);
             }
@@ -350,7 +350,7 @@ public class ApplicationTests {
         List<Customer> c = customers.findAll();
         List<PhysicalMedia> p = physicalMedias.findAll();
 
-        for(int i = 0; i < numberOfRandomRecords; i++) {
+        for (int i = 0; i < numberOfRandomRecords; i++) {
             Lending item = new Lending();
 
             int randomCustomer = r.nextInt(c.size());
@@ -358,7 +358,7 @@ public class ApplicationTests {
 
             item.setCustomer(c.get(randomCustomer));
             item.setPhysicalMedia(p.get(randomPhysicalMedia));
-            item.setLendDate(new Date(System.currentTimeMillis()-i));
+            item.setLendDate(new Date(System.currentTimeMillis() - i));
             item.setExtensions(r.nextInt(3));
             item.setInfo("Info =)");
             item.setState(r.nextBoolean() ? LendingState.LENT : LendingState.RETURNED);
@@ -378,13 +378,13 @@ public class ApplicationTests {
         List<Customer> c = customers.findAll();
         List<Media> m = medias.findAll();
 
-        for(int i = 0; i < numberOfRandomRecords; i++) {
+        for (int i = 0; i < numberOfRandomRecords; i++) {
             Reservation item = new Reservation();
 
             int randomCustomer = r.nextInt(c.size());
             int randomMedia = r.nextInt(m.size());
             Date date = new Date(System.currentTimeMillis());
-            Date newDate = new Date(date.getTime()-r.nextLong());
+            Date newDate = new Date(date.getTime() - r.nextLong());
 
             item.setCustomer(c.get(randomCustomer));
             item.setMedia(m.get(randomMedia));
@@ -395,5 +395,4 @@ public class ApplicationTests {
 
         reservations.save(list);
     }
-
 }
