@@ -101,10 +101,29 @@ public class LibraryController {
 
     // reservation
     public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) {
+        if (mediaDTO == null) {
+            throw new IllegalArgumentException("media must not be null");
+        }
+
+        if (customerDTO == null) {
+            throw new IllegalArgumentException("customer must not be null");
+        }
+
+        Media media = mediaMapper.toModel(mediaDTO);
+        Customer customer = customerMapper.toModel(customerDTO);
+
+        if (!reservationRepository.findDistinctByMediaEqualsAndCustomerEquals(media, customer).isEmpty()) {
+            throw new IllegalStateException("already reserved");
+        }
+
+        if ((physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).size() - reservationRepository.findDistinctByMediaEquals(media).size()) > 0) {
+            throw new IllegalStateException("no need to reserve");
+        }
+
         // create new reservation object
         Reservation reservation = new Reservation();
-        reservation.setMedia(mediaMapper.toModel(mediaDTO));
-        reservation.setCustomer(customerMapper.toModel(customerDTO));
+        reservation.setMedia(media);
+        reservation.setCustomer(customer);
         reservation.setDate(new Date());
 
         // save reservation
@@ -117,6 +136,10 @@ public class LibraryController {
     public void cancelReservation(ReservationDTO reservationDTO) {
         Reservation reservation = reservationMapper.toModel(reservationDTO);
         reservationRepository.delete(reservation);
+    }
+
+    public List<ReservationDTO> findReservations() {
+        return reservationMapper.toDTOs(reservationRepository.findDistinctByOrderByDateAsc());
     }
 
     // lending

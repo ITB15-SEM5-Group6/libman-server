@@ -1,5 +1,8 @@
 package at.fhv.itb.sem5.team6.libman.server;
 
+import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
+import at.fhv.itb.sem5.team6.libman.server.application.mapper.*;
+import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
 import org.junit.runner.RunWith;
@@ -15,6 +18,54 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 public abstract class EmbeddedMongoUnitTest {
+
+    @Autowired
+    protected CustomerRepository customerRepository;
+    @Autowired
+    protected CustomerMapper customerMapper;
+
+    @Autowired
+    protected LendingRepository lendingRepository;
+    @Autowired
+    protected LendingMapper lendingMapper;
+
+    @Autowired
+    protected MediaRepository mediaRepository;
+    @Autowired
+    protected MediaMapper mediaMapper;
+
+    @Autowired
+    protected PhysicalMediaRepository physicalMediaRepository;
+    @Autowired
+    protected PhysicalMediaMapper physicalMediaMapper;
+
+    @Autowired
+    protected ReservationRepository reservationRepository;
+    @Autowired
+    protected ReservationMapper reservationMapper;
+
+    @Autowired
+    protected LibraryController libraryController;
+
+    protected void customer() {
+        TestData.customer(customerRepository);
+    }
+
+    protected void media() {
+        TestData.media(mediaRepository);
+    }
+
+    protected void physicalMedia(int number) {
+        TestData.physicalMedia(physicalMediaRepository, mediaRepository, number);
+    }
+
+    protected void lending(int number) {
+        TestData.lending(lendingRepository, physicalMediaRepository, customerRepository, number);
+    }
+
+    protected void reservation(int number) {
+        TestData.reservation(reservationRepository, mediaRepository, customerRepository, number);
+    }
 
     @Configuration
     @EnableMongoRepositories
