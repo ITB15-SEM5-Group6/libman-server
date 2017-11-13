@@ -55,9 +55,9 @@ public class LibraryController {
         }
 
         Predicate<Media> filter = (
-                media -> (type == null || media.getType() == type) &&
-                        (genre == null || media.getGenre() == genre) &&
-                        (availability == null ||
+                media -> (type == MediaType.ALL || media.getType() == type) &&
+                        (genre == Genre.ALL || media.getGenre() == genre) &&
+                        (availability == Availability.ALL ||
                                 (availability.equals(Availability.AVAILABLE) && !physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty()
                                         || availability.equals(Availability.NOT_AVAILABLE) && physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty())
                         )
