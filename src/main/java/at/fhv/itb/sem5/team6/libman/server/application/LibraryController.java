@@ -55,9 +55,12 @@ public class LibraryController {
         }
 
         Predicate<Media> filter = (
-                media -> (type != null && media.getType() != type) ||
-                        (genre != null && media.getGenre() != genre) ||
-                        (availability != null && !physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, availability).isEmpty())
+                media -> (type == null || media.getType() == type) &&
+                        (genre == null || media.getGenre() == genre) &&
+                        (availability == null ||
+                                (availability.equals(Availability.AVAILABLE) && !physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty()
+                                        || availability.equals(Availability.NOT_AVAILABLE) && physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty())
+                        )
         );
 
         return mediaMapper.toDTOs(result.stream().filter(filter).collect(Collectors.toList()));
@@ -141,5 +144,13 @@ public class LibraryController {
             lending.setExtensions(lending.getExtensions() + 1);
             lendingRepository.save(lending);
         }
+    }
+
+    public List<CustomerDTO> getCustomers() {
+        return customerMapper.toDTOs(customerRepository.findAll());
+    }
+
+    public List<CustomerDTO> findCustomers(String text) {
+        return customerMapper.toDTOs(customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeAllIgnoreCase(text, text, text));
     }
 }

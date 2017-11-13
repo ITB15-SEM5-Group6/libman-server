@@ -47,7 +47,18 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
         return libraryController.getPhysicalMedia(media);
     }
 
-// Reservation
+    @Override
+    public List<CustomerDTO> getAllCustomers() throws RemoteException {
+        return libraryController.getCustomers();
+    }
+
+    @Override
+    public List<CustomerDTO> findCustomers(String text) throws RemoteException {
+        return libraryController.findCustomers(text);
+    }
+
+
+    // Reservation
 @Override
 public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) {
     return libraryController.reserveMedia(mediaDTO, customerDTO);

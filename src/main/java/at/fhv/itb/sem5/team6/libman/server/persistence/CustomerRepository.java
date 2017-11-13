@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CustomerRepository extends MongoRepository<Customer, String> {
     List<Customer> findByLastName(String name);
+
+    List<Customer> findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeAllIgnoreCase(String firstName, String lastName, String email);
 }
