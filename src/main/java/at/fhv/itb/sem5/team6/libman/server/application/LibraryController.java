@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
@@ -71,15 +72,31 @@ public class LibraryController {
                 }
         );
 
-        return mediaMapper.toDTOs(result.stream().filter(filter).collect(Collectors.toList()));
+        Comparator<Media> byName = Comparator.comparing(Media::getTitle);
+        Comparator<Media> byType = Comparator.comparing(Media::getType);
+
+        return mediaMapper.toDTOs(result.stream().filter(filter).sorted(byName).sorted(byType).collect(Collectors.toList()));
     }
 
     public List<PhysicalMediaDTO> findAllPhysicalMedia() {
-        return physicalMediaMapper.toDTOs(physicalMediaRepository.findAll());
+
+        Comparator<PhysicalMedia> byIndex = Comparator.comparing(PhysicalMedia::getIndex);
+        Comparator<PhysicalMedia> byAvailability = Comparator.comparing(PhysicalMedia::getAvailability);
+
+        List<PhysicalMedia> physicalMediaList = physicalMediaRepository.findAll();
+        physicalMediaList.sort(byIndex);
+        physicalMediaList.sort(byAvailability);
+        return physicalMediaMapper.toDTOs(physicalMediaList);
     }
 
     public List<PhysicalMediaDTO> getPhysicalMedia(MediaDTO media) {
-        return physicalMediaMapper.toDTOs(physicalMediaRepository.findDistinctByMediaEquals(mediaMapper.toModel(media)));
+        Comparator<PhysicalMedia> byIndex = Comparator.comparing(PhysicalMedia::getIndex);
+        Comparator<PhysicalMedia> byAvailability = Comparator.comparing(PhysicalMedia::getAvailability);
+
+        List<PhysicalMedia> physicalMediaList = physicalMediaRepository.findDistinctByMediaEquals(mediaMapper.toModel(media));
+        physicalMediaList.sort(byIndex);
+        physicalMediaList.sort(byAvailability);
+        return physicalMediaMapper.toDTOs(physicalMediaList);
     }
 
     // reservation
