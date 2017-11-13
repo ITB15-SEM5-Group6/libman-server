@@ -55,12 +55,20 @@ public class LibraryController {
         }
 
         Predicate<Media> filter = (
-                media -> (type == MediaType.ALL || media.getType() == type) &&
-                        (genre == Genre.ALL || media.getGenre() == genre) &&
-                        (availability == Availability.ALL ||
-                                (availability.equals(Availability.AVAILABLE) && !physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty()
-                                        || availability.equals(Availability.NOT_AVAILABLE) && physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).isEmpty())
-                        )
+                media -> {
+                    boolean mediaTypeFilter = (type.equals(MediaType.ALL) || media.getType().equals(type));
+                    boolean genreFilter = (genre.equals(Genre.ALL) || media.getGenre().equals(genre));
+
+                    int amountAvailablePhysicalMediaOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).size();
+                    int amountReservationsOfMedia = reservationRepository.findDistinctByMediaEquals(media).size();
+
+
+                    boolean availableFilter = (availability.equals(Availability.ALL) ||
+                                                (availability.equals(Availability.AVAILABLE) &&(amountAvailablePhysicalMediaOfMedia - amountReservationsOfMedia) > 0) ||
+                                                (availability.equals(Availability.NOT_AVAILABLE) && (amountAvailablePhysicalMediaOfMedia - amountReservationsOfMedia) <= 0));
+
+                    return mediaTypeFilter && genreFilter && availableFilter;
+                }
         );
 
         return mediaMapper.toDTOs(result.stream().filter(filter).collect(Collectors.toList()));
