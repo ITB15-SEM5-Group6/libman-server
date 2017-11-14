@@ -13,6 +13,21 @@ import java.util.List;
 import java.util.Random;
 
 public class TestData {
+    public static void daRulez(DaRulezRepository daRulezRepository) {
+        daRulezRepository.deleteAll();
+
+        DaRulez daRulez = new DaRulez();
+        daRulez.setMaxExtensions(2);
+        long maxLendingDuration = 14 * 24 * 60 * 60 * 1000;
+        daRulez.setMaxLendingDurationInMilliseconds(maxLendingDuration);
+        long maxReservationDuration = 7 * 24 * 60 * 60 * 1000;
+        daRulez.setMaxReservationDuration(maxReservationDuration);
+        daRulez.setAnnualFee(25.00f);
+        daRulez.setOverdueFine(10.00f);
+
+        daRulezRepository.save(daRulez);
+    }
+
     public static void media(MediaRepository mediaRepository) {
         mediaRepository.deleteAll();
 

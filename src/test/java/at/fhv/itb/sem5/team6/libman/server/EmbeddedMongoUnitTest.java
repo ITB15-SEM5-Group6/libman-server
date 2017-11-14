@@ -20,6 +20,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class EmbeddedMongoUnitTest {
 
     @Autowired
+    private DaRulezRepository daRulezRepository;
+
+    @Autowired
     protected CustomerRepository customerRepository;
     @Autowired
     protected CustomerMapper customerMapper;
@@ -46,6 +49,10 @@ public abstract class EmbeddedMongoUnitTest {
 
     @Autowired
     protected LibraryController libraryController;
+
+    protected void daRulez() {
+        TestData.daRulez(daRulezRepository);
+    }
 
     protected void customer() {
         TestData.customer(customerRepository);

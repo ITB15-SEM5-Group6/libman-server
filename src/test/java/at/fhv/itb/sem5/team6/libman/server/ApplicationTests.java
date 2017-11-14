@@ -1,6 +1,5 @@
 package at.fhv.itb.sem5.team6.libman.server;
 
-import at.fhv.itb.sem5.team6.libman.server.model.DaRulez;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,39 +22,22 @@ public class ApplicationTests {
     private Random r = new Random();
 
     @Autowired
-    private ReservationRepository reservations;
-
-    @Autowired
-    private CustomerRepository customers;
-
-    @Autowired
-    private MediaRepository medias;
-
-    @Autowired
-    private PhysicalMediaRepository physicalMedias;
-
-    @Autowired
-    private LendingRepository lendings;
-
-    @Autowired
     private DaRulezRepository daRulezRepository;
 
-    @Test
-    @Ignore
-    public void addDaRulez() {
-        daRulezRepository.deleteAll();
+    @Autowired
+    private ReservationRepository reservationRepository;
 
-        DaRulez daRulez = new DaRulez();
-        daRulez.setMaxExtensions(2);
-        long maxLendingDuration = 14 * 24 * 60 * 60 * 1000;
-        daRulez.setMaxLendingDurationInMilliseconds(maxLendingDuration);
-        long maxReservationDuration = 7 * 24 * 60 * 60 * 1000;
-        daRulez.setMaxReservationDuration(maxReservationDuration);
-        daRulez.setAnnualFee(25.00f);
-        daRulez.setOverdueFine(10.00f);
+    @Autowired
+    private CustomerRepository customerRepository;
 
-        daRulezRepository.save(daRulez);
-    }
+    @Autowired
+    private MediaRepository mediaRepository;
+
+    @Autowired
+    private PhysicalMediaRepository physicalMediaRepository;
+
+    @Autowired
+    private LendingRepository lendingRepository;
 
     /**
      * General Process:
@@ -70,10 +52,11 @@ public class ApplicationTests {
     }
 
     private void reinsertDatabase(int numberOfRandomRecords) {
-        media(medias);
-        customer(customers);
-        physicalMedia(physicalMedias, medias, numberOfRandomRecords);
-        lending(lendings, physicalMedias, customers, numberOfRandomRecords);
-        reservation(reservations, medias, customers, numberOfRandomRecords);
+        daRulez(daRulezRepository);
+        media(mediaRepository);
+        customer(customerRepository);
+        physicalMedia(physicalMediaRepository, mediaRepository, numberOfRandomRecords);
+        lending(lendingRepository, physicalMediaRepository, customerRepository, numberOfRandomRecords);
+        reservation(reservationRepository, mediaRepository, customerRepository, numberOfRandomRecords);
     }
 }
