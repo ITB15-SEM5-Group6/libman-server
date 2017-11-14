@@ -1,8 +1,6 @@
 package at.fhv.itb.sem5.team6.libman.server;
 
-import at.fhv.itb.sem5.team6.libman.server.model.Customer;
-import at.fhv.itb.sem5.team6.libman.server.model.Media;
-import at.fhv.itb.sem5.team6.libman.server.model.Reservation;
+import at.fhv.itb.sem5.team6.libman.server.model.DaRulez;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -12,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import static at.fhv.itb.sem5.team6.libman.server.TestData.*;
 
@@ -40,16 +37,24 @@ public class ApplicationTests {
     @Autowired
     private LendingRepository lendings;
 
+    @Autowired
+    private DaRulezRepository daRulezRepository;
 
     @Test
     @Ignore
-    public void contextLoads() {
-        Customer customer = customers.findByLastName("Dengg").get(0);
-        Media media = medias.findAll().stream().filter(media1 -> media1.getTitle().contains("Feuerkelch")).collect(Collectors.toList()).get(0);
+    public void addDaRulez() {
+        daRulezRepository.deleteAll();
 
-        Reservation reservation = new Reservation();
-        reservations.save(reservation);
+        DaRulez daRulez = new DaRulez();
+        daRulez.setMaxExtensions(2);
+        long maxLendingDuration = 14 * 24 * 60 * 60 * 1000;
+        daRulez.setMaxLendingDurationInMilliseconds(maxLendingDuration);
+        long maxReservationDuration = 7 * 24 * 60 * 60 * 1000;
+        daRulez.setMaxReservationDuration(maxReservationDuration);
+        daRulez.setAnnualFee(25.00f);
+        daRulez.setOverdueFine(10.00f);
 
+        daRulezRepository.save(daRulez);
     }
 
     /**
@@ -59,6 +64,7 @@ public class ApplicationTests {
      * use annotation @Ignore to skip a test
      */
     @Test
+    @Ignore
     public void reinsertDatabase() {
         reinsertDatabase(50);
     }
