@@ -229,6 +229,58 @@ public class TestData {
         media20.setTags("Die Auserwählten im Labyrinth, Erinnerung, Thomas, Labyrinth, Weg, Geheimnis");
         media20.setGenre(Genre.SCIFI);
 
+        Media media21 = new Media();
+        media21.setTitle("Fünf Freunde und die goldene Maske des Pharao");
+        media21.setType(MediaType.CD);
+        media21.setIsbn("887254412229");
+        media21.setAuthor("-");
+        media21.setPublisher("SONY MUSIC ENTERTAINMENT");
+        media21.setReleaseDate(Date.valueOf("2013-06-07"));
+        media21.setTags("Südküste, Quentin, Böse");
+        media21.setGenre(Genre.ADVENTURE);
+
+        Media media22 = new Media();
+        media22.setTitle("Alles was du brauchst - Seine größten Hits");
+        media22.setType(MediaType.CD);
+        media22.setIsbn("888751133020"); //EAN
+        media22.setAuthor("Nik P.");
+        media22.setPublisher("Sony Music Entertainment Germany ");
+        media22.setReleaseDate(Date.valueOf("2015-09-25"));
+        media22.setTags("Schlager");
+        media22.setGenre(Genre.ALL);
+
+        Media media23 = new Media();
+        media23.setTitle("Entspannungsmusik");
+        media23.setType(MediaType.CD);
+        media23.setIsbn("4012897210260");
+        media23.setAuthor("Wellness Pur");
+        media23.setPublisher("Media Sound Art,");
+        media23.setReleaseDate(Date.valueOf("2011-03-01"));
+        media23.setTags("Instrumental, Wohlfühlen");
+        media23.setGenre(Genre.DOCUMENTATION);
+
+        Media media24 = new Media();
+        media24.setTitle("Feuerwehrmann Sam - Abenteuer im Schnee");
+        media24.setType(MediaType.CD);
+        media24.setIsbn("4260264434331");
+        media24.setAuthor("-");
+        media24.setPublisher("Justbridge Entertainment ");
+        media24.setReleaseDate(Date.valueOf("2015-11-13"));
+        media24.setTags("Lawine, Sarah, Schnee");
+        media24.setGenre(Genre.ADVENTURE);
+
+        Media media25 = new Media();
+        media25.setTitle("Trolls - Finde dein Glück");
+        media25.setType(MediaType.CD);
+        media25.setIsbn("4029759111764");
+        media25.setAuthor("-");
+        media25.setPublisher("Edel Germany");
+        media25.setReleaseDate(Date.valueOf("2016-10-21"));
+        media25.setTags("Fantasie, Regenbogen, Poppy, ");
+        media25.setGenre(Genre.FANTASY);
+
+
+
         mediasToAdd.add(media);
         mediasToAdd.add(media1);
         mediasToAdd.add(media2);
@@ -250,6 +302,12 @@ public class TestData {
         mediasToAdd.add(media18);
         mediasToAdd.add(media19);
         mediasToAdd.add(media20);
+        mediasToAdd.add(media21);
+        mediasToAdd.add(media22);
+        mediasToAdd.add(media23);
+        mediasToAdd.add(media24);
+        mediasToAdd.add(media25);
+
 
         mediaRepository.save(mediasToAdd);
     }
@@ -259,12 +317,138 @@ public class TestData {
 
         List<Customer> list = new ArrayList<>();
 
-        Customer c = new Customer();
-        c.setFirstName("Alex");
-        c.setLastName("Dengg");
+        Customer customer1 = new Customer();
+        customer1.setFirstName("Alex");
+        customer1.setLastName("Dengg");
+        customer1.setAddress("Steinebach 13, 6850 Dornbirn");
+        customer1.setEmail("alex.dengg@gmx.at");
+        customer1.setPhoneNumber("069924739773");
+        customer1.setBic("-");
+        customer1.setIban("-");
 
-        customerRepository.save(c);
-        // TODO: implement
+        Customer customer2 = new Customer();
+        customer2.setFirstName("Stefan");
+        customer2.setLastName("Müller");
+        customer2.setAddress("Sägerstraße 3, 6850 Dornbin");
+        customer2.setEmail("stefan.müller@gmx.at");
+        customer2.setPhoneNumber("06641639874");
+        customer2.setBic("-");
+        customer2.setIban("-");
+
+        Customer customer3 = new Customer();
+        customer3.setFirstName("Klaus");
+        customer3.setLastName("Bechter");
+        customer3.setAddress("Bregenzerstraße 2, 6900 Bregenz");
+        customer3.setEmail("klaus.bechter@hotmail.com");
+        customer3.setPhoneNumber("069937284995");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        Customer customer4 = new Customer();
+        customer4.setFirstName("Stadtbücherei Bregenz");
+        customer4.setLastName("-");
+        customer4.setAddress("Gerberstraße 4, 6900 Bregenz");
+        customer4.setEmail("stadtbuecherei@bregenz.at");
+        customer4.setBic("SPBRAT2BXXX");
+        customer4.setIban("AT64 2060 1000 0000 1800");
+
+        Customer customer5 = new Customer();
+        customer5.setFirstName("Peter");
+        customer5.setLastName("Draxler");
+        customer3.setAddress("Ritterstraße 6, 6900 Bregenz");
+        customer3.setEmail("peter.draxler@hotmail.com");
+        customer3.setPhoneNumber("069923484733");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        Customer customer6 = new Customer();
+        customer6.setFirstName("Michael");
+        customer6.setLastName("Sturm");
+        customer3.setAddress("Hofstraße 109, 6900 Bregenz");
+        customer3.setEmail("michael.sturm@gmx.at");
+        customer3.setPhoneNumber("069929390445");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+
+        Customer customer7 = new Customer();
+        customer7.setFirstName("Sarah");
+        customer7.setLastName("Greber");
+        customer3.setAddress("Thal 39, 6934 Sulzberg");
+        customer3.setEmail("sarah.greber@aon.at");
+        customer3.setPhoneNumber("066419233443");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        Customer customer8 = new Customer();
+        customer8.setFirstName("Öffentliche Bücherei der Gemeinde Kennelbach");
+        customer8.setLastName("-");
+        customer3.setAddress("Kirchstraße 17, 6921 Kennelbach");
+        customer3.setEmail("direktion@vskb.snv.at");
+        customer3.setPhoneNumber("0557471732");
+        customer3.setBic("SPBAAT4BXXX");
+        customer3.setIban("AT64 2050 1000 0000 1800");
+
+        Customer customer9 = new Customer();
+        customer9.setFirstName("Daniela");
+        customer9.setLastName("Schwärzler");
+        customer3.setAddress("Zellerweg 2, 6850 Dornbin ");
+        customer3.setEmail("daniela.schwaerzler@gmx.at");
+        customer3.setPhoneNumber("055724938");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        Customer customer10 = new Customer();
+        customer10.setFirstName("Julia");
+        customer10.setLastName("Giselbrecht");
+        customer3.setAddress("Feldstraße 40, 6850 Dornbin ");
+        customer3.setEmail("julia.gisbelbrecht@gmx.at");
+        customer3.setPhoneNumber("069923998746");
+        customer3.setBic("");
+        customer3.setIban("-");
+
+        Customer customer11 = new Customer();
+        customer11.setFirstName("Michaela");
+        customer11.setLastName("Knapp");
+        customer3.setAddress("Buchsstraße 1,6850 Dornbin ");
+        customer3.setEmail("michaela.knapp@hotmail.com");
+        customer3.setPhoneNumber("069928374475");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        Customer customer12 = new Customer();
+        customer12.setFirstName("Bücherei Höchst");
+        customer12.setLastName("-");
+        customer3.setAddress("Franz-Reiter-Straße 19, 6973 Höchst");
+        customer3.setEmail("bvoe@bvoe.at ");
+        customer3.setPhoneNumber("0557876898");
+        customer3.setBic("SPBBAT3BXXX");
+        customer3.setIban("AT64 2020 1000 0000 1800");
+
+        Customer customer13 = new Customer();
+        customer13.setFirstName("Alexandra");
+        customer13.setLastName("Schöffel");
+        customer3.setAddress("Baumstraße 8, 6973 Höchst");
+        customer3.setEmail("alexandra@schöffel.at ");
+        customer3.setPhoneNumber("0557876348");
+        customer3.setBic("-");
+        customer3.setIban("-");
+
+        list.add(customer1);
+        list.add(customer2);
+        list.add(customer3);
+        list.add(customer4);
+        list.add(customer5);
+        list.add(customer6);
+        list.add(customer7);
+        list.add(customer8);
+        list.add(customer9);
+        list.add(customer10);
+        list.add(customer11);
+        list.add(customer12);
+        list.add(customer13);
+
+        customerRepository.save(list);
 
     }
 
