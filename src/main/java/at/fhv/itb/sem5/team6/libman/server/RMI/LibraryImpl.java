@@ -15,7 +15,7 @@ import java.util.List;
 
 public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
 
-    private LibraryController libraryController;
+    private final LibraryController libraryController;
 
     protected LibraryImpl(LibraryController libraryController) throws RemoteException {
         this.libraryController = libraryController;
@@ -31,58 +31,99 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
         this.libraryController = libraryController;
     }
 
-// Search
     @Override
-    public List<MediaDTO> findAllMedia(String text, Genre genre, MediaType mediaType, Availability availability) {
-        return libraryController.findAllMedia(text, genre, mediaType, availability);
+    public List<MediaDTO> findMedias() throws RemoteException {
+        return libraryController.findMedias();
     }
 
     @Override
-    public List<PhysicalMediaDTO> findAllPhysicalMedia() {
-        return libraryController.findAllPhysicalMedia();
+    public List<MediaDTO> findMedias(String s, Genre genre, MediaType mediaType, Availability availability) throws RemoteException {
+        return libraryController.findMedias(s, genre, mediaType, availability);
     }
 
     @Override
-    public List<PhysicalMediaDTO> getPhysicalMedia(MediaDTO media) {
-        return libraryController.getPhysicalMedia(media);
+    public List<CustomerDTO> findCustomers() throws RemoteException {
+        return libraryController.findCustomers();
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomers() throws RemoteException {
-        return libraryController.getCustomers();
+    public List<CustomerDTO> findCustomers(String s) throws RemoteException {
+        return libraryController.findCustomers(s);
     }
 
     @Override
-    public List<CustomerDTO> findCustomers(String text) throws RemoteException {
-        return libraryController.findCustomers(text);
+    public List<PhysicalMediaDTO> findPhysicalMedias() throws RemoteException {
+        return libraryController.findPhysicalMedias();
     }
 
-
-    // Reservation
-@Override
-public ReservationDTO reserveMedia(MediaDTO mediaDTO, CustomerDTO customerDTO) {
-    return libraryController.reserveMedia(mediaDTO, customerDTO);
-}
+    @Override
+    public List<PhysicalMediaDTO> findPhysicalMedias(MediaDTO mediaDTO) throws RemoteException {
+        return libraryController.findPhysicalMedias(mediaDTO);
+    }
 
     @Override
-    public void cancelReservation(ReservationDTO reservationDTO) {
+    public List<ReservationDTO> findReservations() throws RemoteException {
+        return libraryController.findReservations();
+    }
+
+    @Override
+    public List<ReservationDTO> findReservations(MediaDTO mediaDTO) throws RemoteException {
+        return libraryController.findReservations(mediaDTO);
+    }
+
+    @Override
+    public List<ReservationDTO> findReservations(CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.findReservations();
+    }
+
+    @Override
+    public List<ReservationDTO> findReservations(MediaDTO mediaDTO, CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.findReservations(mediaDTO, customerDTO);
+    }
+
+    @Override
+    public List<LendingDTO> findLendings() throws RemoteException {
+        return libraryController.findLendings();
+    }
+
+    @Override
+    public List<LendingDTO> findLendings(PhysicalMediaDTO physicalMediaDTO) throws RemoteException {
+        return libraryController.findLendings(physicalMediaDTO);
+    }
+
+    @Override
+    public List<LendingDTO> findLendings(CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.findLendings(customerDTO);
+    }
+
+    @Override
+    public List<LendingDTO> findLendings(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.findLendings(physicalMediaDTO, customerDTO);
+    }
+
+    @Override
+    public ReservationDTO reserve(MediaDTO mediaDTO, CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.reserve(mediaDTO, customerDTO);
+    }
+
+    @Override
+    public void cancelReservation(ReservationDTO reservationDTO) throws RemoteException {
         libraryController.cancelReservation(reservationDTO);
     }
 
-// Lending
-@Override
-public LendingDTO lendPhysicalMedia(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) {
-    return libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
-}
-
     @Override
-    public void returnPhysicalMedia(PhysicalMediaDTO physicalMediaDTO) {
-        libraryController.returnPhysicalMedia(physicalMediaDTO);
+    public LendingDTO lend(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) throws RemoteException {
+        return libraryController.lend(physicalMediaDTO, customerDTO);
     }
 
     @Override
-    public void extendLending(LendingDTO lendingDTO) {
-        libraryController.extendLending(lendingDTO);
+    public void returnLending(LendingDTO lendingDTO) throws RemoteException {
+        libraryController.returnLending(lendingDTO);
+    }
+
+    @Override
+    public LendingDTO extendLending(LendingDTO lendingDTO) throws RemoteException {
+        return libraryController.extendLending(lendingDTO);
     }
 
 }

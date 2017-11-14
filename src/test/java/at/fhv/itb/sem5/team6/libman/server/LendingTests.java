@@ -53,9 +53,9 @@ public class LendingTests {
 
         List<Lending> lendingList = lendingRepository.findDistinctByPhysicalMediaEqualsAndStateEquals(physicalMediaMapper.toModel(physicalMediaDTO), LendingState.LENT);
 
-        lendingList.forEach(lending -> lendingRepository.delete(lending));
+        lendingRepository.delete(lendingList);
 
-        LendingDTO lendingDTO = libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
+        LendingDTO lendingDTO = libraryController.lend(physicalMediaDTO, customerDTO);
 
         assert lendingDTO.getCustomer().equals(customerDTO);
         //assert lendingDTO.getLendDate().equals(new Date());
@@ -64,7 +64,7 @@ public class LendingTests {
         assert lendingDTO.getState().equals(LendingState.LENT);
 
         try {
-            lendingDTO = libraryController.lendPhysicalMedia(physicalMediaDTO, customerDTO);
+            lendingDTO = libraryController.lend(physicalMediaDTO, customerDTO);
         } catch (IllegalArgumentException e) {
             assert e.getMessage().equals("Physical Media already lent");
         }

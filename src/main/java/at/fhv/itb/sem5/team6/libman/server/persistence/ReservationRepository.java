@@ -10,7 +10,9 @@ import java.util.List;
 public interface ReservationRepository extends MongoRepository<Reservation, String> {
     List<Reservation> findDistinctByOrderByDateAsc();
 
-    List<Reservation> findDistinctByMediaEquals(Media media);
+    List<Reservation> findDistinctByMediaEqualsOrderByDateAsc(Media media);
 
-    List<Reservation> findDistinctByMediaEqualsAndCustomerEquals(Media media, Customer customer);
+    List<Reservation> findDistinctByCustomerEqualsOrderByDateAsc(Customer customer);
+
+    List<Reservation> findDistinctByMediaEqualsAndCustomerEqualsOrderByDateAsc(Media media, Customer customer);
 }
