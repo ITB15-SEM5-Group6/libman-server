@@ -52,12 +52,12 @@ public class LibraryController {
     }
 
     public List<MediaDTO> findMedias() {
-        List<Media> medias = mediaRepository.findDistinctByOrderByTitleAscTypeAsc();
+        List<Media> medias = mediaRepository.findDistinctByOrderByTypeAscTitleAsc();
         return mediaMapper.toDTOs(medias);
     }
 
     public List<MediaDTO> findMedias(String text, Genre genre, MediaType mediaType, Availability availability) {
-        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTitleAscTypeAsc(text, text, text, text);
+        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTypeAscTitleAsc(text, text, text, text);
 
         Predicate<Media> filter = (
                 media -> {
@@ -197,8 +197,8 @@ public class LibraryController {
             throw new IllegalArgumentException("customer must not be null");
         }
 
-        PhysicalMedia physicalMedia = physicalMediaMapper.toModel(physicalMediaDTO);
-        Customer customer = customerMapper.toModel(customerDTO);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaDTO.getId());
+        Customer customer = customerRepository.findOne(customerDTO.getId());
 
         if (physicalMedia.getAvailability() == Availability.NOT_AVAILABLE) {
             throw new IllegalStateException("phyiscal media is not available");
