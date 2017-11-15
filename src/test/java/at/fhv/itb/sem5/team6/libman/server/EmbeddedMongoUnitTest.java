@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class EmbeddedMongoUnitTest {
 
     @Autowired
-    private DaRulezRepository daRulezRepository;
+    protected DaRulezRepository daRulezRepository;
 
     @Autowired
     protected CustomerRepository customerRepository;

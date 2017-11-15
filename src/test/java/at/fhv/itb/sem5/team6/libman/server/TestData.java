@@ -274,13 +274,21 @@ public class TestData {
 
         List<Customer> list = new ArrayList<>();
 
-        Customer c = new Customer();
+        // TODO: implement
+
+        /*Customer c = new Customer();
         c.setFirstName("Alex");
         c.setLastName("Dengg");
 
-        customerRepository.save(c);
-        // TODO: implement
+        list.add(c);
 
+        Customer c1 = new Customer();
+        c1.setFirstName("Susanne");
+        c1.setLastName("Kopf");
+
+        list.add(c1);*/
+
+        customerRepository.save(list);
     }
 
     public static void physicalMedia(PhysicalMediaRepository physicalMediaRepository, MediaRepository mediaRepository, int number) {
@@ -295,7 +303,7 @@ public class TestData {
             for (int i = 1; i <= number; i++) {
                 PhysicalMedia item = new PhysicalMedia();
 
-                item.setAvailability(r.nextBoolean() ? Availability.AVAILABLE : Availability.NOT_AVAILABLE);
+                item.setAvailability(Availability.AVAILABLE);
                 item.setMedia(media);
                 item.setIndex(media.getIsbn() + "-" + i);
 
@@ -347,15 +355,15 @@ public class TestData {
         for (int i = 0; i < number; i++) {
             Lending item = new Lending();
 
-            int randomCustomer = r.nextInt(c.size());
-            int randomPhysicalMedia = r.nextInt(p.size());
+            Customer randomCustomer = c.get(r.nextInt(c.size()));
+            PhysicalMedia randomPhysicalMedia = p.get(r.nextInt(p.size()));
 
-            item.setCustomer(c.get(randomCustomer));
-            item.setPhysicalMedia(p.get(randomPhysicalMedia));
+            item.setCustomer(randomCustomer);
+            item.setPhysicalMedia(randomPhysicalMedia);
+            item.setState(randomPhysicalMedia.getAvailability() == Availability.NOT_AVAILABLE ? LendingState.LENT : LendingState.RETURNED);
             item.setLendDate(new Date(System.currentTimeMillis() - i));
-            item.setExtensions(r.nextInt(3));
+            item.setExtensions(0);
             item.setInfo("Info =)");
-            item.setState(r.nextBoolean() ? LendingState.LENT : LendingState.RETURNED);
 
             list.add(item);
         }

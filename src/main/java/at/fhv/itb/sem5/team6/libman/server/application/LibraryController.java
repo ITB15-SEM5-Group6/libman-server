@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class LibraryController {
-    private final DaRulez daRulez;
+    private final DaRulezRepository daRulezRepository;
 
     private final MediaRepository mediaRepository;
     private final MediaMapper mediaMapper;
@@ -37,6 +37,7 @@ public class LibraryController {
 
     @Autowired
     public LibraryController(DaRulezRepository daRulezRepository, MediaRepository mediaRepository, MediaMapper mediaMapper, CustomerRepository customerRepository, CustomerMapper customerMapper, ReservationRepository reservationRepository, ReservationMapper reservationMapper, PhysicalMediaRepository physicalMediaRepository, PhysicalMediaMapper physicalMediaMapper, LendingRepository lendingRepository, LendingMapper lendingMapper) {
+        this.daRulezRepository = daRulezRepository;
         this.mediaRepository = mediaRepository;
         this.mediaMapper = mediaMapper;
         this.customerRepository = customerRepository;
@@ -47,24 +48,22 @@ public class LibraryController {
         this.physicalMediaMapper = physicalMediaMapper;
         this.lendingRepository = lendingRepository;
         this.lendingMapper = lendingMapper;
-
-        daRulez = daRulezRepository.findFirstBy();
     }
 
     public List<MediaDTO> findMedias() {
-        List<Media> medias = mediaRepository.findDistinctByOrderByTypeAscTitleAsc();
+        List<Media> medias = mediaRepository.findDistinctByOrderByTitleAscTypeAsc();
         return mediaMapper.toDTOs(medias);
     }
 
-    public List<MediaDTO> findMedias(String text, Genre genre, MediaType mediaType, Availability availability) {
-        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTypeAscTitleAsc(text, text, text, text);
+    public List<MediaDTO> findMedias(String term, Genre genre, MediaType mediaType, Availability availability) {
+        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTitleAscTypeAsc(term, term, term, term);
 
         Predicate<Media> filter = (
                 media -> {
                     boolean mediaTypeFilter = (mediaType.equals(MediaType.ALL) || media.getType().equals(mediaType));
                     boolean genreFilter = (genre.equals(Genre.ALL) || media.getGenre().equals(genre));
 
-                    int amountAvailablePhysicalMediaOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).size();
+                    int amountAvailablePhysicalMediaOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(media, Availability.AVAILABLE).size();
                     int amountReservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media).size();
 
                     //TODO check for Availibility status before accessing db
@@ -80,12 +79,12 @@ public class LibraryController {
     }
 
     public List<CustomerDTO> findCustomers() {
-        List<Customer> customers = customerRepository.findDistinctByOrderByLastNameAscFirstNameAsc();
+        List<Customer> customers = customerRepository.findDistinctByOrderByFirstNameAscLastNameAsc();
         return customerMapper.toDTOs(customers);
     }
 
     public List<CustomerDTO> findCustomers(String term) {
-        List<Customer> customers = customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByLastNameAscFirstNameAsc(term, term, term, term, term, term, term);
+        List<Customer> customers = customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByFirstNameAscLastNameAsc(term, term, term, term, term, term, term);
         return customerMapper.toDTOs(customers);
     }
 
@@ -94,8 +93,8 @@ public class LibraryController {
         return physicalMediaMapper.toDTOs(physicalMedias);
     }
 
-    public List<PhysicalMediaDTO> findPhysicalMedias(MediaDTO mediaDTO) {
-        Media media = mediaMapper.toModel(mediaDTO);
+    public List<PhysicalMediaDTO> findPhysicalMediasByMedia(String physicalMediaId) {
+        Media media = mediaRepository.findOne(physicalMediaId);
         List<PhysicalMedia> physicalMedias = physicalMediaRepository.findDistinctByMediaEqualsOrderByIndexAsc(media);
         return physicalMediaMapper.toDTOs(physicalMedias);
     }
@@ -105,21 +104,21 @@ public class LibraryController {
         return reservationMapper.toDTOs(reservations);
     }
 
-    public List<ReservationDTO> findReservations(MediaDTO mediaDTO) {
-        Media media = mediaMapper.toModel(mediaDTO);
+    public List<ReservationDTO> findReservationsByMedia(String mediaId) {
+        Media media = mediaRepository.findOne(mediaId);
         List<Reservation> reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media);
         return reservationMapper.toDTOs(reservations);
     }
 
-    public List<ReservationDTO> findReservations(CustomerDTO customerDTO) {
-        Customer customer = customerMapper.toModel(customerDTO);
+    public List<ReservationDTO> findReservationsByCustomer(String customerId) {
+        Customer customer = customerRepository.findOne(customerId);
         List<Reservation> reservations = reservationRepository.findDistinctByCustomerEqualsOrderByDateAsc(customer);
         return reservationMapper.toDTOs(reservations);
     }
 
-    public List<ReservationDTO> findReservations(MediaDTO mediaDTO, CustomerDTO customerDTO) {
-        Media media = mediaMapper.toModel(mediaDTO);
-        Customer customer = customerMapper.toModel(customerDTO);
+    public List<ReservationDTO> findReservationsByMediaAndCustomer(String mediaId, String customerId) {
+        Media media = mediaRepository.findOne(mediaId);
+        Customer customer = customerRepository.findOne(customerId);
         List<Reservation> reservations = reservationRepository.findDistinctByMediaEqualsAndCustomerEqualsOrderByDateAsc(media, customer);
         return reservationMapper.toDTOs(reservations);
     }
@@ -129,43 +128,58 @@ public class LibraryController {
         return lendingMapper.toDTOs(lendings);
     }
 
-    public List<LendingDTO> findLendings(PhysicalMediaDTO physicalMediaDTO) {
-        PhysicalMedia physicalMedia = physicalMediaMapper.toModel(physicalMediaDTO);
+    public List<LendingDTO> findLendings(LendingState lendingState) {
+        List<Lending> lendings = lendingRepository.findDistinctByStateEqualsOrderByLendDateAsc(lendingState);
+        return lendingMapper.toDTOs(lendings);
+    }
+
+    public List<LendingDTO> findLendingsByPhysicalMedia(String physicalMediaId) {
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
         List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsOrderByLendDateAsc(physicalMedia);
         return lendingMapper.toDTOs(lendings);
     }
 
-    public List<LendingDTO> findLendings(CustomerDTO customerDTO) {
-        Customer customer = customerMapper.toModel(customerDTO);
+    public List<LendingDTO> findLendingsByPhysicalMedia(String physicalMediaId, LendingState lendingState) {
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByLendDateAsc(physicalMedia, lendingState);
+        return lendingMapper.toDTOs(lendings);
+    }
+
+    public List<LendingDTO> findLendingsByCustomer(String customerId) {
+        Customer customer = customerRepository.findOne(customerId);
         List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsOrderByLendDateAsc(customer);
         return lendingMapper.toDTOs(lendings);
     }
 
-    public List<LendingDTO> findLendings(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) {
-        PhysicalMedia physicalMedia = physicalMediaMapper.toModel(physicalMediaDTO);
-        Customer customer = customerMapper.toModel(customerDTO);
+    public List<LendingDTO> findLendingsByCustomer(String customerId, LendingState lendingState) {
+        Customer customer = customerRepository.findOne(customerId);
+        List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsAndStateEqualsOrderByLendDateAsc(customer, lendingState);
+        return lendingMapper.toDTOs(lendings);
+    }
+
+    public List<LendingDTO> findLendingsByPhysicalMediaAndCustomer(String physicalMediaId, String customerId) {
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
+        Customer customer = customerRepository.findOne(customerId);
         List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(physicalMedia, customer);
         return lendingMapper.toDTOs(lendings);
     }
 
-    public ReservationDTO reserve(MediaDTO mediaDTO, CustomerDTO customerDTO) {
-        //TODO: maybe not needed
-        if (mediaDTO == null) {
-            throw new IllegalArgumentException("media must not be null");
-        }
+    public List<LendingDTO> findLendingsByPhysicalMediaAndCustomer(String physicalMediaId, String customerId, LendingState lendingState) {
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
+        Customer customer = customerRepository.findOne(customerId);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByLendDateAsc(physicalMedia, customer, lendingState);
+        return lendingMapper.toDTOs(lendings);
+    }
 
-        if (customerDTO == null) {
-            throw new IllegalArgumentException("customer must not be null");
-        }
-
-        Media media = mediaMapper.toModel(mediaDTO);
-        Customer customer = customerMapper.toModel(customerDTO);
+    public ReservationDTO reserve(String mediaId, String customerId) {
+        Media media = mediaRepository.findOne(mediaId);
+        Customer customer = customerRepository.findOne(customerId);
 
         if (!reservationRepository.findDistinctByMediaEqualsAndCustomerEqualsOrderByDateAsc(media, customer).isEmpty()) {
             throw new IllegalStateException("already reserved");
         }
 
-        if ((physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(media, Availability.AVAILABLE).size() - reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media).size()) > 0) {
+        if ((physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(media, Availability.AVAILABLE).size() - reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media).size()) > 0) {
             throw new IllegalStateException("no need to reserve");
         }
 
@@ -182,32 +196,37 @@ public class LibraryController {
         return reservationMapper.toDTO(reservation);
     }
 
-    public void cancelReservation(ReservationDTO reservationDTO) {
-        Reservation reservation = reservationMapper.toModel(reservationDTO);
-        reservationRepository.delete(reservation);
+    public void cancelReservation(String reservationId) {
+        reservationRepository.delete(reservationId);
     }
 
-    public LendingDTO lend(PhysicalMediaDTO physicalMediaDTO, CustomerDTO customerDTO) {
-        // TODO maybe not needed
-        if (physicalMediaDTO == null) {
-            throw new IllegalArgumentException("physical media must not be null");
-        }
-
-        if (customerDTO == null) {
-            throw new IllegalArgumentException("customer must not be null");
-        }
-
-        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaDTO.getId());
-        Customer customer = customerRepository.findOne(customerDTO.getId());
+    public LendingDTO lend(String physicalMediaId, String customerId) {
+        PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
+        Customer customer = customerRepository.findOne(customerId);
 
         if (physicalMedia.getAvailability() == Availability.NOT_AVAILABLE) {
             throw new IllegalStateException("phyiscal media is not available");
         }
 
-        int amountAvailablePhysicalMediasOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEquals(physicalMedia.getMedia(), physicalMedia.getAvailability()).size();
-        int amountReservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia()).size();
+        List<Reservation> reservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia());
+        int i = -1;
+        for (Reservation reservation : reservationsOfMedia) {
+            if (customer.equals(reservation.getCustomer())) {
+                i = reservationsOfMedia.indexOf(reservation);
+                break;
+            }
+        }
 
-        if ((amountAvailablePhysicalMediasOfMedia - amountReservationsOfMedia) <= 0) {
+        int amountAvailablePhysicalMediasOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(physicalMedia.getMedia(), physicalMedia.getAvailability()).size();
+
+        int substractor;
+        if (i < 0) {
+            substractor = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia()).size();
+        } else {
+            substractor = i;
+        }
+
+        if ((amountAvailablePhysicalMediasOfMedia - substractor) <= 0) {
             throw new IllegalStateException("physical media is already reserved");
         }
 
@@ -220,6 +239,11 @@ public class LibraryController {
         lending.setState(LendingState.LENT);
         lending.setExtensions(0);
 
+        if (i >= 0) {
+            Reservation reservationOfCustomer = reservationRepository.findDistinctByMediaEqualsAndCustomerEqualsOrderByDateAsc(physicalMedia.getMedia(), customer).get(0);
+            reservationRepository.delete(reservationOfCustomer);
+        }
+
         physicalMediaRepository.save(physicalMedia);
         lendingRepository.save(lending);
 
@@ -227,13 +251,8 @@ public class LibraryController {
     }
 
 
-    public void returnLending(LendingDTO lendingDTO) {
-        // TODO maybe not needed
-        if (lendingDTO == null) {
-            throw new IllegalArgumentException("lending must not be null");
-        }
-
-        Lending lending = lendingMapper.toModel(lendingDTO);
+    public void returnLending(String lendingId) {
+        Lending lending = lendingRepository.findOne(lendingId);
 
         if (lending.getState() == LendingState.RETURNED) {
             throw new IllegalStateException("lending is already returned");
@@ -248,23 +267,21 @@ public class LibraryController {
         lendingRepository.save(lending);
     }
 
-    public LendingDTO extendLending(LendingDTO lendingDTO) {
-        // TODO maybe not needed
-        if (lendingDTO == null) {
-            throw new IllegalArgumentException("lending must not be null");
-        }
-
-        Lending lending = lendingMapper.toModel(lendingDTO);
+    public LendingDTO extendLending(String lendingId) {
+        Lending lending = lendingRepository.findOne(lendingId);
 
         if (lending.getState() == LendingState.RETURNED) {
             throw new IllegalStateException("lending is already returned");
         }
 
+        DaRulez daRulez = daRulezRepository.findFirstBy();
         if (lending.getExtensions() >= daRulez.getMaxExtensions()) {
             throw new IllegalStateException("lending may not be extended more than " + daRulez.getMaxExtensions());
         }
 
         lending.setExtensions(lending.getExtensions() + 1);
+        long newTime = lending.getLendDate().getTime() + daRulez.getMaxLendingDurationInMilliseconds();
+        lending.getLendDate().setTime(newTime);
 
         lendingRepository.save(lending);
 

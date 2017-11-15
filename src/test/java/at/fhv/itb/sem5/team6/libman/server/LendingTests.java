@@ -1,74 +1,178 @@
 package at.fhv.itb.sem5.team6.libman.server;
 
-import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
-import at.fhv.itb.sem5.team6.libman.server.application.mapper.CustomerMapper;
-import at.fhv.itb.sem5.team6.libman.server.application.mapper.LendingMapper;
-import at.fhv.itb.sem5.team6.libman.server.application.mapper.PhysicalMediaMapper;
-import at.fhv.itb.sem5.team6.libman.server.model.Lending;
-import at.fhv.itb.sem5.team6.libman.server.persistence.CustomerRepository;
-import at.fhv.itb.sem5.team6.libman.server.persistence.LendingRepository;
-import at.fhv.itb.sem5.team6.libman.server.persistence.PhysicalMediaRepository;
-import at.fhv.itb.sem5.team6.libman.server.persistence.ReservationRepository;
+import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.CustomerDTO;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.LendingDTO;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.PhysicalMediaDTO;
+import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
 import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class LendingTests {
+import static org.junit.Assert.*;
 
-    @Autowired
-    private LibraryController libraryController;
+public class LendingTests extends EmbeddedMongoUnitTest {
 
-    @Autowired
-    private ReservationRepository reservationRepository;
+    @Before
+    public void setUp() {
+        daRulez();
+        customer();
+        media();
+        physicalMedia(1);
+    }
 
-    @Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private CustomerMapper customerMapper;
-
-    @Autowired
-    private PhysicalMediaRepository physicalMediaRepository;
-    @Autowired
-    private PhysicalMediaMapper physicalMediaMapper;
-
-    @Autowired
-    private LendingRepository lendingRepository;
-    @Autowired
-    private LendingMapper lendingMapper;
+    @After
+    public void tearDown() {
+        customerRepository.deleteAll();
+        mediaRepository.deleteAll();
+        physicalMediaRepository.deleteAll();
+        lendingRepository.deleteAll();
+        reservationRepository.deleteAll();
+    }
 
     @Test
-    public void testLending() {
-        CustomerDTO customerDTO = customerMapper.toDTO(customerRepository.findAll().get(0));
-        PhysicalMediaDTO physicalMediaDTO = physicalMediaMapper.toDTO(physicalMediaRepository.findAll().get(0));
+    public void simpleLendingTest() {
+        CustomerDTO customer = customerMapper.toDTO(customerRepository.findAll().get(0));
+        PhysicalMediaDTO physicalMedia = physicalMediaMapper.toDTO(physicalMediaRepository.findAll().get(0));
 
-        List<Lending> lendingList = lendingRepository.findDistinctByPhysicalMediaEqualsAndStateEquals(physicalMediaMapper.toModel(physicalMediaDTO), LendingState.LENT);
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
 
-        lendingRepository.delete(lendingList);
+        assertNotNull(lendingDTO);
 
-        LendingDTO lendingDTO = libraryController.lend(physicalMediaDTO, customerDTO);
+        Lending lending = lendingMapper.toModel(lendingDTO);
+        assertEquals(lending, lendingRepository.findOne(lending.getId()));
+    }
 
-        assert lendingDTO.getCustomer().equals(customerDTO);
-        //assert lendingDTO.getLendDate().equals(new Date());
-        assert lendingDTO.getExtensions().equals(0);
-        assert lendingDTO.getPhysicalMedia().equals(physicalMediaDTO);
-        assert lendingDTO.getState().equals(LendingState.LENT);
+    @Test
+    public void reservedByYouLendingTest() {
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+        Media media = physicalMedia.getMedia();
 
-        try {
-            lendingDTO = libraryController.lend(physicalMediaDTO, customerDTO);
-        } catch (IllegalArgumentException e) {
-            assert e.getMessage().equals("Physical Media already lent");
+        Reservation reservation = new Reservation();
+        reservation.setMedia(media);
+        reservation.setCustomer(customer);
+        reservation.setDate(new Date());
+
+        reservationRepository.save(reservation);
+
+        libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        assertEquals(0, reservationRepository.count());
+        assertEquals(1, lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(physicalMedia, customer).size());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void reservedByOthersLendingTest() {
+        List<Customer> customers = customerRepository.findAll();
+        Customer customer = customers.get(0);
+        Customer other = customers.get(1);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+        Media media = physicalMedia.getMedia();
+
+        Reservation reservation = new Reservation();
+        reservation.setMedia(media);
+        reservation.setCustomer(customer);
+        reservation.setDate(new Date());
+
+        reservationRepository.save(reservation);
+
+        // should fail
+        libraryController.lend(physicalMedia.getId(), other.getId());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void alreadyLentLendingTest() {
+        List<Customer> customers = customerRepository.findAll();
+        Customer customer = customers.get(0);
+        Customer other = customers.get(1);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        // should work
+        libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        // should fail
+        libraryController.lend(physicalMedia.getId(), other.getId());
+    }
+
+    @Test
+    public void returnLendingTest() {
+
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        libraryController.returnLending(lendingDTO.getId());
+
+        Lending lending = lendingRepository.findOne(lendingDTO.getId());
+
+        assertEquals(LendingState.RETURNED, lending.getState());
+        assertEquals(Availability.AVAILABLE, lending.getPhysicalMedia().getAvailability());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void returnAlreadyReturnedLendingTest() {
+
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        // should work
+        libraryController.returnLending(lendingDTO.getId());
+        // should fail
+        libraryController.returnLending(lendingDTO.getId());
+    }
+
+    @Test
+    public void extendLendingTest() {
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        long lendingDate = lendingDTO.getLendDate().getTime();
+
+        libraryController.extendLending(lendingDTO.getId());
+
+        Lending lending = lendingRepository.findOne(lendingDTO.getId());
+
+        assertTrue(lendingDate < lending.getLendDate().getTime());
+        assertEquals(lendingDate + daRulezRepository.findFirstBy().getMaxLendingDurationInMilliseconds(), lending.getLendDate().getTime());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void tooOftenExtendLendingTest() {
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        // should work
+        for (int i = 0; i < daRulezRepository.findFirstBy().getMaxExtensions(); i++) {
+            libraryController.extendLending(lendingDTO.getId());
         }
 
-        lendingRepository.delete(lendingMapper.toModel(lendingDTO));
+        // should fail
+        libraryController.extendLending(lendingDTO.getId());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void extendAlreadyReturnedLendingTest() {
+        Customer customer = customerRepository.findAll().get(0);
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), customer.getId());
+
+        // should work
+        libraryController.returnLending(lendingDTO.getId());
+
+        // should fail
+        libraryController.extendLending(lendingDTO.getId());
     }
 }

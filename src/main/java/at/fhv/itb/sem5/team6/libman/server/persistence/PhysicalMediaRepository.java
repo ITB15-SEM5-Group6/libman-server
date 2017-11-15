@@ -7,11 +7,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface PhysicalMediaRepository extends MongoRepository<PhysicalMedia, String> {
-    List<PhysicalMedia> findDistinctByMediaEquals(Media media);
-
     List<PhysicalMedia> findDistinctByOrderByIndexAsc();
 
     List<PhysicalMedia> findDistinctByMediaEqualsOrderByIndexAsc(Media media);
 
-    List<PhysicalMedia> findDistinctByMediaEqualsAndAvailabilityEquals(Media media, Availability availability);
+    List<PhysicalMedia> findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(Media media, Availability availability);
 }

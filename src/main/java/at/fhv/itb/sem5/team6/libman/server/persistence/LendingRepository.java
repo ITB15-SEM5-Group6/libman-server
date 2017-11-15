@@ -17,5 +17,11 @@ public interface LendingRepository extends MongoRepository<Lending,String>{
 
     List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, Customer customer);
 
-    List<Lending> findDistinctByPhysicalMediaEqualsAndStateEquals(PhysicalMedia physicalMedia, LendingState state);
+    List<Lending> findDistinctByStateEqualsOrderByLendDateAsc(LendingState lendingState);
+
+    List<Lending> findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, LendingState lendingState);
+
+    List<Lending> findDistinctByCustomerEqualsAndStateEqualsOrderByLendDateAsc(Customer customer, LendingState lendingState);
+
+    List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, Customer customer, LendingState lendingState);
 }

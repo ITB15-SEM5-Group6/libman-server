@@ -39,7 +39,7 @@ public class ReservationTests extends EmbeddedMongoUnitTest {
 
         CustomerDTO customerDTO = customerMapper.toDTO(customerRepository.findAll().get(0));
 
-        ReservationDTO reservationDTO = libraryController.reserve(mediaDTO, customerDTO);
+        ReservationDTO reservationDTO = libraryController.reserve(mediaDTO.getId(), customerDTO.getId());
 
         assertNotNull(reservationDTO);
 
@@ -67,11 +67,11 @@ public class ReservationTests extends EmbeddedMongoUnitTest {
         item.setAvailability(Availability.NOT_AVAILABLE);
         physicalMediaRepository.save(item);
 
-        ReservationDTO reservation = libraryController.reserve(mediaMapper.toDTO(item.getMedia()), customerMapper.toDTO(customerRepository.findAll().get(0)));
+        ReservationDTO reservation = libraryController.reserve(item.getMedia().getId(), customerRepository.findAll().get(0).getId());
 
         assertEquals(1, reservationRepository.count());
 
-        libraryController.cancelReservation(reservation);
+        libraryController.cancelReservation(reservation.getId());
 
         assertEquals(0, reservationRepository.count());
     }
@@ -90,12 +90,12 @@ public class ReservationTests extends EmbeddedMongoUnitTest {
 
         assertNotEquals(randomCustomer, randomCustomer2);
 
-        libraryController.reserve(mediaMapper.toDTO(item.getMedia()), customerMapper.toDTO(randomCustomer));
+        libraryController.reserve(item.getMedia().getId(), randomCustomer.getId());
 
         item.setAvailability(Availability.AVAILABLE);
         physicalMediaRepository.save(item);
 
-        libraryController.reserve(mediaMapper.toDTO(item.getMedia()), customerMapper.toDTO(randomCustomer2));
+        libraryController.reserve(item.getMedia().getId(), randomCustomer2.getId());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -104,24 +104,12 @@ public class ReservationTests extends EmbeddedMongoUnitTest {
 
         CustomerDTO customerDTO = customerMapper.toDTO(customerRepository.findAll().get(0));
 
-        libraryController.reserve(mediaDTO, customerDTO);
+        libraryController.reserve(mediaDTO.getId(), customerDTO.getId());
 
         Thread.sleep(1000);
 
         //should not work
-        libraryController.reserve(mediaDTO, customerDTO);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void nullMediaTest() {
-        // should not work
-        libraryController.reserve(null, customerMapper.toDTO(customerRepository.findAll().get(0)));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void nullCustomerTest() {
-        // should not work
-        libraryController.reserve(mediaMapper.toDTO(mediaRepository.findAll().get(0)), null);
+        libraryController.reserve(mediaDTO.getId(), customerDTO.getId());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -133,6 +121,6 @@ public class ReservationTests extends EmbeddedMongoUnitTest {
         physicalMediaRepository.save(item);
 
         Customer randomCustomer = customerRepository.findAll().get(0);
-        libraryController.reserve(mediaMapper.toDTO(item.getMedia()), customerMapper.toDTO(randomCustomer));
+        libraryController.reserve(item.getMedia().getId(), randomCustomer.getId());
     }
 }
