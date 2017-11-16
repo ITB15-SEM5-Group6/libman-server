@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface CustomerRepository extends MongoRepository<Customer, String> {
-    List<Customer> findDistinctByOrderByFirstNameAscLastNameAsc();
+    List<Customer> findDistinctByOrderByLastNameAscFirstNameAsc();
 
-    List<Customer> findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByFirstNameAscLastNameAsc(String firstName, String lastName, String email, String address, String phoneNumber, String bic, String iban);
+    List<Customer> findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByLastNameAscFirstNameAsc(String firstName, String lastName, String email, String address, String phoneNumber, String bic, String iban);
 }

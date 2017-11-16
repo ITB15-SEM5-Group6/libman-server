@@ -18,7 +18,7 @@ public class SearchTests extends EmbeddedMongoUnitTest {
     @Test
     @Ignore
     public void mediaSearchTest() {
-        //libraryController.findMedias("", null, MediaType.BOOK, null);
-        //int i;
+        mediaRepository.findDistinctByOrderByTypeAscTitleAsc().forEach(System.out::println);
+        customerRepository.findDistinctByOrderByLastNameAscFirstNameAsc().forEach(System.out::println);
     }
 }

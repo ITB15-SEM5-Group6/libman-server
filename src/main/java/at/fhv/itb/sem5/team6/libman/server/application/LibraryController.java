@@ -51,12 +51,12 @@ public class LibraryController {
     }
 
     public List<MediaDTO> findMedias() {
-        List<Media> medias = mediaRepository.findDistinctByOrderByTitleAscTypeAsc();
+        List<Media> medias = mediaRepository.findDistinctByOrderByTypeAscTitleAsc();
         return mediaMapper.toDTOs(medias);
     }
 
     public List<MediaDTO> findMedias(String term, Genre genre, MediaType mediaType, Availability availability) {
-        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTitleAscTypeAsc(term, term, term, term);
+        List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTypeAscTitleAsc(term, term, term, term);
 
         Predicate<Media> filter = (
                 media -> {
@@ -79,12 +79,12 @@ public class LibraryController {
     }
 
     public List<CustomerDTO> findCustomers() {
-        List<Customer> customers = customerRepository.findDistinctByOrderByFirstNameAscLastNameAsc();
+        List<Customer> customers = customerRepository.findDistinctByOrderByLastNameAscFirstNameAsc();
         return customerMapper.toDTOs(customers);
     }
 
     public List<CustomerDTO> findCustomers(String term) {
-        List<Customer> customers = customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByFirstNameAscLastNameAsc(term, term, term, term, term, term, term);
+        List<Customer> customers = customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByLastNameAscFirstNameAsc(term, term, term, term, term, term, term);
         return customerMapper.toDTOs(customers);
     }
 

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface MediaRepository extends MongoRepository<Media, String> {
-    List<Media> findDistinctByOrderByTitleAscTypeAsc();
+    List<Media> findDistinctByOrderByTypeAscTitleAsc();
 
-    List<Media> findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTitleAscTypeAsc(String title, String author, String isbn, String publisher);
+    List<Media> findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTypeAscTitleAsc(String title, String author, String isbn, String publisher);
 }
