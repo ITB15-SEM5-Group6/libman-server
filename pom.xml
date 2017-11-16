@@ -27,7 +27,7 @@
         <org.lombok.version>1.16.18</org.lombok.version>
         <fongo.version>2.0.11</fongo.version>
         <nosqlunit.version>0.7.6</nosqlunit.version>
-        <shared.version>0.10</shared.version>
+        <shared.version>0.11</shared.version>
     </properties>
 
     <repositories>
@@ -96,6 +96,11 @@
             <artifactId>nosqlunit-mongodb</artifactId>
             <version>${nosqlunit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>1.0</version>
         </dependency>
 
     </dependencies>

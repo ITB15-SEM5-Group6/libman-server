@@ -2,11 +2,11 @@ package at.fhv.itb.sem5.team6.libman.server.RMI;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.*;
-import at.fhv.itb.sem5.team6.libman.shared.enums.Availability;
-import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
-import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
-import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
+import at.fhv.itb.sem5.team6.libman.shared.enums.*;
 import at.fhv.itb.sem5.team6.libman.shared.interfaces.ILibrary;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -14,22 +14,29 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
 
     private final LibraryController libraryController;
+    @Getter
+    private final UserRole userRole;
 
-    protected LibraryImpl(LibraryController libraryController) throws RemoteException {
+    protected LibraryImpl(LibraryController libraryController, UserRole userRole) throws RemoteException {
         this.libraryController = libraryController;
+        this.userRole = userRole;
     }
 
-    protected LibraryImpl(int port, LibraryController libraryController) throws RemoteException {
+    protected LibraryImpl(int port, LibraryController libraryController, UserRole userRole) throws RemoteException {
         super(port);
         this.libraryController = libraryController;
+        this.userRole = userRole;
     }
 
-    protected LibraryImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf, LibraryController libraryController) throws RemoteException {
+    protected LibraryImpl(int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf, LibraryController libraryController, UserRole userRole) throws RemoteException {
         super(port, csf, ssf);
         this.libraryController = libraryController;
+        this.userRole = userRole;
     }
 
     @Override
