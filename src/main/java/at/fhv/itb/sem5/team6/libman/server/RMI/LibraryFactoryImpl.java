@@ -31,6 +31,11 @@ public class LibraryFactoryImpl implements ILibraryFactory {
     }
 
     public ILibrary create(String username, String password) throws RemoteException {
+
+        if (username == null && password == null) {
+            return new LibraryImpl(libraryController, UserRole.GUEST);
+        }
+
         //LDAP
         try {
             authenticate(username, password);
