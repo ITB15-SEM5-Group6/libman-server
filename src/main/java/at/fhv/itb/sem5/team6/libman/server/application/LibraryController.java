@@ -129,45 +129,45 @@ public class LibraryController {
     }
 
     public List<LendingDTO> findLendings(LendingState lendingState) {
-        List<Lending> lendings = lendingRepository.findDistinctByStateEqualsOrderByLendDateAsc(lendingState);
+        List<Lending> lendings = lendingRepository.findDistinctByStateEqualsOrderByStateAscLendDateAsc(lendingState);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByPhysicalMedia(String physicalMediaId) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
-        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsOrderByLendDateAsc(physicalMedia);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsOrderByStateAscLendDateAsc(physicalMedia);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByPhysicalMedia(String physicalMediaId, LendingState lendingState) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
-        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByLendDateAsc(physicalMedia, lendingState);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByStateAscLendDateAsc(physicalMedia, lendingState);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByCustomer(String customerId) {
         Customer customer = customerRepository.findOne(customerId);
-        List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsOrderByLendDateAsc(customer);
+        List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsOrderByStateAscLendDateAsc(customer);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByCustomer(String customerId, LendingState lendingState) {
         Customer customer = customerRepository.findOne(customerId);
-        List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsAndStateEqualsOrderByLendDateAsc(customer, lendingState);
+        List<Lending> lendings = lendingRepository.findDistinctByCustomerEqualsAndStateEqualsOrderByStateAscLendDateAsc(customer, lendingState);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByPhysicalMediaAndCustomer(String physicalMediaId, String customerId) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
         Customer customer = customerRepository.findOne(customerId);
-        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(physicalMedia, customer);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByStateAscLendDateAsc(physicalMedia, customer);
         return lendingMapper.toDTOs(lendings);
     }
 
     public List<LendingDTO> findLendingsByPhysicalMediaAndCustomer(String physicalMediaId, String customerId, LendingState lendingState) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
         Customer customer = customerRepository.findOne(customerId);
-        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByLendDateAsc(physicalMedia, customer, lendingState);
+        List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByStateAscLendDateAsc(physicalMedia, customer, lendingState);
         return lendingMapper.toDTOs(lendings);
     }
 

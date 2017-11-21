@@ -11,17 +11,17 @@ import java.util.List;
 public interface LendingRepository extends MongoRepository<Lending,String>{
     List<Lending> findDistinctByOrderByLendDateAsc();
 
-    List<Lending> findDistinctByPhysicalMediaEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia);
+    List<Lending> findDistinctByPhysicalMediaEqualsOrderByStateAscLendDateAsc(PhysicalMedia physicalMedia);
 
-    List<Lending> findDistinctByCustomerEqualsOrderByLendDateAsc(Customer customer);
+    List<Lending> findDistinctByCustomerEqualsOrderByStateAscLendDateAsc(Customer customer);
 
-    List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, Customer customer);
+    List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByStateAscLendDateAsc(PhysicalMedia physicalMedia, Customer customer);
 
-    List<Lending> findDistinctByStateEqualsOrderByLendDateAsc(LendingState lendingState);
+    List<Lending> findDistinctByStateEqualsOrderByStateAscLendDateAsc(LendingState lendingState);
 
-    List<Lending> findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, LendingState lendingState);
+    List<Lending> findDistinctByPhysicalMediaEqualsAndStateEqualsOrderByStateAscLendDateAsc(PhysicalMedia physicalMedia, LendingState lendingState);
 
-    List<Lending> findDistinctByCustomerEqualsAndStateEqualsOrderByLendDateAsc(Customer customer, LendingState lendingState);
+    List<Lending> findDistinctByCustomerEqualsAndStateEqualsOrderByStateAscLendDateAsc(Customer customer, LendingState lendingState);
 
-    List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByLendDateAsc(PhysicalMedia physicalMedia, Customer customer, LendingState lendingState);
+    List<Lending> findDistinctByPhysicalMediaEqualsAndCustomerEqualsAndStateEqualsOrderByStateAscLendDateAsc(PhysicalMedia physicalMedia, Customer customer, LendingState lendingState);
 }

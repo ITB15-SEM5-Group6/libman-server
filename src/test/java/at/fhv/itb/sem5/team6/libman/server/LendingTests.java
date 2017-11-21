@@ -63,7 +63,7 @@ public class LendingTests extends EmbeddedMongoUnitTest {
         libraryController.lend(physicalMedia.getId(), customer.getId());
 
         assertEquals(0, reservationRepository.count());
-        assertEquals(1, lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByLendDateAsc(physicalMedia, customer).size());
+        assertEquals(1, lendingRepository.findDistinctByPhysicalMediaEqualsAndCustomerEqualsOrderByStateAscLendDateAsc(physicalMedia, customer).size());
     }
 
     @Test(expected = IllegalStateException.class)
