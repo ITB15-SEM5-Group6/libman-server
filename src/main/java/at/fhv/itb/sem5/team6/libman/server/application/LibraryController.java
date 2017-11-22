@@ -276,12 +276,10 @@ public class LibraryController {
 
         DaRulez daRulez = daRulezRepository.findFirstBy();
         if (lending.getExtensions() >= daRulez.getMaxExtensions()) {
-            throw new IllegalStateException("lending may not be extended more than " + daRulez.getMaxExtensions());
+            throw new IllegalStateException("lending may not be extended more than " + daRulez.getMaxExtensions() + " times");
         }
 
-        lending.setExtensions(lending.getExtensions() + 1);
-        long newTime = lending.getLendDate().getTime() + daRulez.getMaxLendingDurationInMilliseconds();
-        lending.getLendDate().setTime(newTime);
+        lending.setLendDate(new Date());
 
         lendingRepository.save(lending);
 
