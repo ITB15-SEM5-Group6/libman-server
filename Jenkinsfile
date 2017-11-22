@@ -1,23 +1,32 @@
-Jenkinsfile (Scripted Pipeline)
 pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Clean') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+            steps {
+                sh 'mvn package'
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
         stage('Deploy') {
             steps {
-                sh 'ls ~/libman | grep jar | xargs fuser -k'
-                sh 'yes | cp -rf target/*.jar ~/libman'
+                sh 'jps | grep libman-server | awk '{print $1}' | xargs kill -9 || true'
+                sh 'yes | cp -rf target/*.jar .'
             }
         }
         stage('Run'){
             steps {
-                sh 'java -jar ~/libman/*.jar &'
+                sh 'env BUILD_ID=dontKillMe nohup java -jar *.jar &'
             }
         }
     }
