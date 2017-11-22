@@ -143,7 +143,6 @@ public class LendingTests extends EmbeddedMongoUnitTest {
         Lending lending = lendingRepository.findOne(lendingDTO.getId());
 
         assertTrue(lendingDate < lending.getLendDate().getTime());
-        assertEquals(lendingDate + daRulezRepository.findFirstBy().getMaxLendingDurationInMilliseconds(), lending.getLendDate().getTime());
     }
 
     @Test(expected = IllegalStateException.class)
