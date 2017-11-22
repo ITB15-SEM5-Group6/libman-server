@@ -467,6 +467,7 @@ public class TestData {
         Random r = new Random();
         physicalMediaRepository.deleteAll();
 
+
         List<Media> m = mediaRepository.findAll();
 
         List<PhysicalMedia> list = new ArrayList<>(m.size() * number);
@@ -501,12 +502,10 @@ public class TestData {
 
             int randomCustomer = r.nextInt(c.size());
             int randomMedia = r.nextInt(m.size());
-            Date date = new Date(System.currentTimeMillis());
-            Date newDate = new Date(date.getTime() - r.nextLong());
 
             item.setCustomer(c.get(randomCustomer));
             item.setMedia(m.get(randomMedia));
-            item.setDate(newDate);
+            item.setDate(new Date(System.currentTimeMillis() - i));
 
             list.add(item);
         }
