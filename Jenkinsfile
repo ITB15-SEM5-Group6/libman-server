@@ -4,24 +4,36 @@ pipeline {
     stages {
         stage('Clean') {
             steps {
-                sh 'mvn clean'
+                step {
+                    sh 'mvn clean'
+                }
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                step {
+                    sh 'mvn test'
+                }
             }
         }
         stage('Package') {
             steps {
-                sh 'mvn package'
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                step {
+                    sh 'mvn package'
+                }
+                step {
+                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'jps | grep libman-server | awk '{print $1}' | xargs kill -9 || true'
-                sh 'yes | cp -rf target/*.jar .'
+                step {
+                    sh 'jps | grep libman-server | awk '{print $1}' | xargs kill -9 || true'
+                }
+                step {
+                    sh 'yes | cp -rf target/*.jar .'
+                }
             }
         }
         stage('Run'){
