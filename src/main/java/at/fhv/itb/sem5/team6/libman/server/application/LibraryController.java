@@ -280,6 +280,7 @@ public class LibraryController {
         }
 
         lending.setLendDate(new Date());
+        lending.setExtensions(lending.getExtensions() + 1);
 
         lendingRepository.save(lending);
 
