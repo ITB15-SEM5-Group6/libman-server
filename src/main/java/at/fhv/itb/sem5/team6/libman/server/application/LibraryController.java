@@ -321,8 +321,6 @@ public class LibraryController {
 
         return lendingMapper.toDTO(lending);
     }
-
-    public int getNumberOfAvailableMedias(String mediaId) {
         Media media = mediaRepository.findOne(mediaId);
 
         int availablePhsicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(media, Availability.AVAILABLE).size();
