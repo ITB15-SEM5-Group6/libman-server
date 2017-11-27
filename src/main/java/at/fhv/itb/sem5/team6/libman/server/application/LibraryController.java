@@ -258,6 +258,7 @@ public class LibraryController {
         Reservation reservation = reservationRepository.findOne(reservationId);
         Customer customer = reservation.getCustomer();
         Media media = reservation.getMedia();
+
         List<Reservation> reservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media);
 
         int i = -1;
@@ -271,6 +272,7 @@ public class LibraryController {
         if (i == -1) {
             return false;
         }
+        i++;
 
         int availablePhysicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(
                 media, Availability.AVAILABLE).size();
