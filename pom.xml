@@ -27,7 +27,7 @@
         <org.lombok.version>1.16.18</org.lombok.version>
         <fongo.version>2.0.11</fongo.version>
         <nosqlunit.version>0.7.6</nosqlunit.version>
-        <shared.version>0.12</shared.version>
+        <shared.version>0.13</shared.version>
     </properties>
 
     <repositories>
