@@ -209,6 +209,7 @@ public class LibraryController {
         }
 
         List<Reservation> reservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia());
+
         int i = -1;
         for (Reservation reservation : reservationsOfMedia) {
             if (customer.equals(reservation.getCustomer())) {
@@ -217,7 +218,9 @@ public class LibraryController {
             }
         }
 
-        int amountAvailablePhysicalMediasOfMedia = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(physicalMedia.getMedia(), physicalMedia.getAvailability()).size();
+        int amountAvailablePhysicalMediasOfMedia =
+                physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(
+                        physicalMedia.getMedia(), Availability.AVAILABLE).size();
 
         int substractor;
         if (i < 0) {
@@ -250,6 +253,34 @@ public class LibraryController {
         return lendingMapper.toDTO(lending);
     }
 
+    public boolean isLendPossible(String reservationId) {
+
+        Reservation reservation = reservationRepository.findOne(reservationId);
+        Customer customer = reservation.getCustomer();
+        Media media = reservation.getMedia();
+        List<Reservation> reservationsOfMedia = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media);
+
+        int i = -1;
+        for (Reservation r : reservationsOfMedia) {
+            if (customer.equals(r.getCustomer())) {
+                i = reservationsOfMedia.indexOf(r);
+                break;
+            }
+        }
+
+        if (i == -1) {
+            return false;
+        }
+
+        int availablePhysicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(
+                media, Availability.AVAILABLE).size();
+
+
+        if ((availablePhysicalMedias - i) >= 0) {
+            return true;
+        }
+        return false;
+    }
 
     public void returnLending(String lendingId) {
         Lending lending = lendingRepository.findOne(lendingId);
@@ -279,12 +310,7 @@ public class LibraryController {
             throw new IllegalStateException("Lending may not be extended more than " + daRulez.getMaxExtensions() + " times");
         }
 
-        // count available physical medias < count reservations -> error
-        int availablePhsicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(
-                lending.getPhysicalMedia().getMedia(), Availability.AVAILABLE).size();
-        int reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(lending.getPhysicalMedia().getMedia()).size();
-
-        if (availablePhsicalMedias < reservations) {
+        if (getNumberOfAvailableMedias(lending.getPhysicalMedia().getMedia().getId()) < 0) {
             throw new IllegalStateException("No extension possible because there are more reservations than available phyiscal medias");
         }
 
@@ -294,6 +320,15 @@ public class LibraryController {
         lendingRepository.save(lending);
 
         return lendingMapper.toDTO(lending);
+    }
+
+    public int getNumberOfAvailableMedias(String mediaId) {
+        Media media = mediaRepository.findOne(mediaId);
+
+        int availablePhsicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(media, Availability.AVAILABLE).size();
+        int reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media).size();
+
+        return availablePhsicalMedias - reservations;
     }
 
     public int getMaxExtensions() {
