@@ -1,6 +1,7 @@
 package at.fhv.itb.sem5.team6.libman.server.application;
 
 import at.fhv.itb.sem5.team6.libman.server.application.mapper.*;
+import at.fhv.itb.sem5.team6.libman.server.jms.JmsConsumer;
 import at.fhv.itb.sem5.team6.libman.server.model.*;
 import at.fhv.itb.sem5.team6.libman.server.persistence.*;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.*;
@@ -9,6 +10,7 @@ import at.fhv.itb.sem5.team6.libman.shared.enums.Genre;
 import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -18,6 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class LibraryController {
+    private final JmsTemplate jmsProducer;
+    private final JmsConsumer jmsConsumer;
+
     private final DaRulezRepository daRulezRepository;
 
     private final MediaRepository mediaRepository;
@@ -36,7 +41,9 @@ public class LibraryController {
     private final LendingMapper lendingMapper;
 
     @Autowired
-    public LibraryController(DaRulezRepository daRulezRepository, MediaRepository mediaRepository, MediaMapper mediaMapper, CustomerRepository customerRepository, CustomerMapper customerMapper, ReservationRepository reservationRepository, ReservationMapper reservationMapper, PhysicalMediaRepository physicalMediaRepository, PhysicalMediaMapper physicalMediaMapper, LendingRepository lendingRepository, LendingMapper lendingMapper) {
+    public LibraryController(JmsTemplate jmsProducer, JmsConsumer jmsConsumer, DaRulezRepository daRulezRepository, MediaRepository mediaRepository, MediaMapper mediaMapper, CustomerRepository customerRepository, CustomerMapper customerMapper, ReservationRepository reservationRepository, ReservationMapper reservationMapper, PhysicalMediaRepository physicalMediaRepository, PhysicalMediaMapper physicalMediaMapper, LendingRepository lendingRepository, LendingMapper lendingMapper) {
+        this.jmsProducer = jmsProducer;
+        this.jmsConsumer = jmsConsumer;
         this.daRulezRepository = daRulezRepository;
         this.mediaRepository = mediaRepository;
         this.mediaMapper = mediaMapper;
@@ -298,6 +305,8 @@ public class LibraryController {
 
         physicalMediaRepository.save(physicalMedia);
         lendingRepository.save(lending);
+
+        jmsProducer.convertAndSend("operators", "Hello");
     }
 
     public LendingDTO extendLending(String lendingId) {
@@ -335,5 +344,9 @@ public class LibraryController {
 
     public int getMaxExtensions() {
         return daRulezRepository.findFirstBy().getMaxExtensions();
+    }
+
+    public String getNextMessage() {
+        return jmsConsumer.getNextMessage();
     }
 }

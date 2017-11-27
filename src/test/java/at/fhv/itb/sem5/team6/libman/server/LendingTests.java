@@ -109,6 +109,8 @@ public class LendingTests extends EmbeddedMongoUnitTest {
 
         libraryController.returnLending(lendingDTO.getId());
 
+        //Message message = jmsTemplate.receive("mailbox");
+
         Lending lending = lendingRepository.findOne(lendingDTO.getId());
 
         assertEquals(LendingState.RETURNED, lending.getState());

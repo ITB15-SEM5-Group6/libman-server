@@ -1,4 +1,4 @@
-package at.fhv.itb.sem5.team6.libman.server.RMI;
+package at.fhv.itb.sem5.team6.libman.server.rmi;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.*;
@@ -167,5 +167,10 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
     @Override
     public LendingDTO extendLending(String s) throws RemoteException {
         return libraryController.extendLending(s);
+    }
+
+    @Override
+    public String getNextMessage() throws RemoteException {
+        return libraryController.getNextMessage();
     }
 }

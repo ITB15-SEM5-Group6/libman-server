@@ -1,4 +1,4 @@
-package at.fhv.itb.sem5.team6.libman.server.RMI;
+package at.fhv.itb.sem5.team6.libman.server.rmi;
 
 import at.fhv.itb.sem5.team6.libman.server.application.LibraryController;
 import at.fhv.itb.sem5.team6.libman.shared.enums.UserRole;
