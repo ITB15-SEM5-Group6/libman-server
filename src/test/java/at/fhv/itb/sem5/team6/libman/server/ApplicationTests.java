@@ -46,9 +46,8 @@ public class ApplicationTests {
      * use annotation @Ignore to skip a test
      */
     @Test
-    @Ignore
     public void reinsertDatabase() {
-        reinsertDatabase(50);
+        reinsertDatabase(3);
     }
 
     private void reinsertDatabase(int numberOfRandomRecords) {
