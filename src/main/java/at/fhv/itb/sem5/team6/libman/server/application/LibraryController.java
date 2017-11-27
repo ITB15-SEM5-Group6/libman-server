@@ -271,12 +271,21 @@ public class LibraryController {
         Lending lending = lendingRepository.findOne(lendingId);
 
         if (lending.getState() == LendingState.RETURNED) {
-            throw new IllegalStateException("lending is already returned");
+            throw new IllegalStateException("Lending is already returned");
         }
 
         DaRulez daRulez = daRulezRepository.findFirstBy();
         if (lending.getExtensions() >= daRulez.getMaxExtensions()) {
-            throw new IllegalStateException("lending may not be extended more than " + daRulez.getMaxExtensions() + " times");
+            throw new IllegalStateException("Lending may not be extended more than " + daRulez.getMaxExtensions() + " times");
+        }
+
+        // count available physical medias < count reservations -> error
+        int availablePhsicalMedias = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(
+                lending.getPhysicalMedia().getMedia(), Availability.AVAILABLE).size();
+        int reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(lending.getPhysicalMedia().getMedia()).size();
+
+        if (availablePhsicalMedias < reservations) {
+            throw new IllegalStateException("No extension possible because there are more reservations than available phyiscal medias");
         }
 
         lending.setLendDate(new Date());
@@ -285,5 +294,9 @@ public class LibraryController {
         lendingRepository.save(lending);
 
         return lendingMapper.toDTO(lending);
+    }
+
+    public int getMaxExtensions() {
+        return daRulezRepository.findFirstBy().getMaxExtensions();
     }
 }
