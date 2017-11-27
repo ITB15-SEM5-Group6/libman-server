@@ -40,6 +40,16 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
     }
 
     @Override
+    public int getNumberOfAvailableMedias(String s) throws RemoteException {
+        return libraryController.getNumberOfAvailableMedias(s);
+    }
+
+    @Override
+    public int getMaxExtensions() throws RemoteException {
+        return libraryController.getMaxExtensions();
+    }
+
+    @Override
     public List<MediaDTO> findMedias() throws RemoteException {
         return libraryController.findMedias();
     }
@@ -127,6 +137,11 @@ public class LibraryImpl extends UnicastRemoteObject implements ILibrary {
     @Override
     public List<LendingDTO> findLendingsByPhysicalMediaAndCustomer(String s, String s1, LendingState lendingState) throws RemoteException {
         return libraryController.findLendingsByPhysicalMediaAndCustomer(s, s1, lendingState);
+    }
+
+    @Override
+    public boolean isLendPossible(String s) throws RemoteException {
+        return libraryController.isLendPossible(s);
     }
 
     @Override
