@@ -18,10 +18,9 @@ import java.util.Hashtable;
 @Service
 public class LibraryFactoryImpl implements ILibraryFactory {
 
-    // TODO insert user names
-    private final ImmutableSet<String> admins = ImmutableSet.of("franz", "hans", "günther");
-    private final ImmutableSet<String> operators = ImmutableSet.of("franz", "hans", "günther");
-    private final ImmutableSet<String> employees = ImmutableSet.of("franz", "hans", "günther");
+    private final ImmutableSet<String> admins = ImmutableSet.of("trz9858", "cts6638", "ade5181", "jsc3127", "afi8826", "mra7219");
+    private final ImmutableSet<String> operators = ImmutableSet.of("mustermax" );
+    private final ImmutableSet<String> employees = ImmutableSet.of("mustermax");
 
     private final LibraryController libraryController;
 
