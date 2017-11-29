@@ -306,7 +306,16 @@ public class LibraryController {
         physicalMediaRepository.save(physicalMedia);
         lendingRepository.save(lending);
 
-        jmsProducer.convertAndSend("operators", "Hello");
+        List<Reservation> reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia());
+        if (!reservations.isEmpty()) {
+            jmsProducer.send("operators",
+                    messageCreator -> messageCreator.createTextMessage(
+                            "reserved media "
+                                    + physicalMedia.getMedia().getId() + " is available. Next reservation is from customer "
+                                    + reservations.get(0).getCustomer().getId()
+                    )
+            );
+        }
     }
 
     public LendingDTO extendLending(String lendingId) {
