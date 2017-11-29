@@ -176,4 +176,20 @@ public class LendingTests extends EmbeddedMongoUnitTest {
         // should fail
         libraryController.extendLending(lendingDTO.getId());
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void extendReservedMediaLendingTest() {
+        List<Customer> customers = customerRepository.findAll().subList(0, 2);
+        Customer first = customers.get(0);
+        Customer second = customers.get(1);
+
+        PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
+
+        LendingDTO lendingDTO = libraryController.lend(physicalMedia.getId(), first.getId());
+
+        libraryController.reserve(physicalMedia.getMedia().getId(), second.getId());
+
+        // should fail
+        libraryController.extendLending(lendingDTO.getId());
+    }
 }

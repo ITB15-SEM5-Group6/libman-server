@@ -31,7 +31,7 @@ public class TestData {
     public static void media(MediaRepository mediaRepository) {
         mediaRepository.deleteAll();
 
-        List<at.fhv.itb.sem5.team6.libman.server.model.Media> mediasToAdd = new ArrayList<>();
+        List<Media> mediasToAdd = new ArrayList<>();
 
         // add medias
 
@@ -41,7 +41,7 @@ public class TestData {
          *
          *
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media = new Media();
          media.setTitle("Harry Potter und der Stein der Weisen");
          media.setType(MediaType.BOOK);
          media.setIsbn("9783551354013");
@@ -53,7 +53,7 @@ public class TestData {
          */
 
 
-        at.fhv.itb.sem5.team6.libman.server.model.Media media1 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+        Media media1 = new Media();
         media1.setTitle("City of Bones");
         media1.setType(MediaType.BOOK);
         media1.setIsbn("9783401502601");
@@ -63,7 +63,7 @@ public class TestData {
         media1.setTags("Magie,liebe ,new york ,schattenjäger ,schattenwesen, simon, unterwelt, urban, fantasy, valentin, vampire, werwölfe");
         media1.setGenre(Genre.FANTASY);
 
-        at.fhv.itb.sem5.team6.libman.server.model.Media media2 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+        Media media2 = new Media();
         media2.setTitle("Die Tribute von Panem");
         media2.setType(MediaType.BOOK);
         media2.setIsbn("9783841501349");
@@ -76,7 +76,7 @@ public class TestData {
         /**
          *
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media3 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media3 = new Media();
          media3.setTitle("Das Reich der Sieben Höfe – Flammen und Finsternis");
          media3.setType(MediaType.BOOK);
          media3.setIsbn(" 9783423761826");
@@ -86,7 +86,7 @@ public class TestData {
          media3.setTags("high lady, high lord, hof der nacht,hybern, kessel, krieg, liebe, magie, rhysand, sarah j. maas, seelengefährte, tamlin");
          media3.setGenre(Genre.FANTASY);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media4 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media4 = new Media();
          media4.setTitle("Origin");
          media4.setType(MediaType.BOOK);
          media4.setIsbn("9783431039993");
@@ -97,7 +97,7 @@ public class TestData {
          media4.setGenre(Genre.THRILLER);
 
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media5 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media5 = new Media();
          media5.setTitle("Die Rückkehr der Wale");
          media5.setType(MediaType.BOOK);
          media5.setIsbn("9783426521809");
@@ -107,7 +107,7 @@ public class TestData {
          media5.setTags("die rückkehr der wale, gefühle, insel, isabel, isabel morland, knaur, landschaft, legende, liebe, morlan, mystisch, natur, rückkehr, schottland, sehnsucht, selkie, wale, zweifel");
          media5.setGenre(Genre.ROMANTIC);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media6 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media6 = new Media();
          media6.setTitle("Träume, die ich uns stehle");
          media6.setType(MediaType.BOOK);
          media6.setIsbn("9783426518977");
@@ -117,7 +117,7 @@ public class TestData {
          media6.setTags("gefühl,hoffnung,intensivstation,koma, krankenhaus, liebe, psychiatrie, psychische krankheit, traurigkeit, unterdrückung ,verzweiflung");
          media6.setGenre(Genre.ROMANTIC);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media7 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media7 = new Media();
          media7.setTitle("Nachtspiel");
          media7.setType(MediaType.BOOK);
          media7.setIsbn("3944676092");
@@ -127,7 +127,7 @@ public class TestData {
          media7.setTags("Medizin, Julia , Tod, Frauenmörder, Leiche, Selbstmord, Kriminalkommisar, Serienkiller");
          media7.setGenre(Genre.HORROR);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media8 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media8 = new Media();
          media8.setTitle("Die Androidin - Auf der Flucht");
          media8.setType(MediaType.BOOK);
          media8.setIsbn(" 9783596297283");
@@ -137,7 +137,7 @@ public class TestData {
          media8.setTags("androidin,flucht, joel, shepherd, tor");
          media8.setGenre(Genre.SCIFI);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media9 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media9 = new Media();
          media9.setTitle("Der letzte erste Kuss");
          media9.setType(MediaType.BOOK);
          media9.setIsbn("9783736304147");
@@ -147,7 +147,7 @@ public class TestData {
          media9.setTags("alltag,anziehung, beste freunde, college, familie, freunde, freundschaft, gefühlschaos, große leidenschaft, high societey, kuss, liebe, liebesgeschichte, politik, roman ,studium");
          media9.setGenre(Genre.ROMANTIC);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media10 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media10 = new Media();
          media10.setTitle("Niemals");
          media10.setType(MediaType.BOOK);
          media10.setIsbn("9783518427569");
@@ -157,7 +157,7 @@ public class TestData {
          media10.setTags("james bond,jenny,aaron,marokko,marrakesch,menschen mit behinderungen,milliarden-erbe,schuld, spannung,thriller,vertrauen");
          media10.setGenre(Genre.THRILLER);
          */
-        at.fhv.itb.sem5.team6.libman.server.model.Media media11 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+        Media media11 = new Media();
         media11.setTitle("Unlocked");
         media11.setType(MediaType.DVD);
         media11.setIsbn("-");
@@ -170,7 +170,7 @@ public class TestData {
         /**
          *
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media12 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media12 = new Media();
          media12.setTitle("PLÖTZLICH PAPA");
          media12.setType(MediaType.DVD);
          media12.setIsbn("-");
@@ -180,7 +180,7 @@ public class TestData {
          media12.setTags("Frankreich, Single, Kristin, Gloria, Tochter, allein, London,Stuntman");
          media12.setGenre(Genre.COMEDY);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media13 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media13 = new Media();
          media13.setTitle("DIE GLORREICHEN SIEBEN");
          media13.setType(MediaType.DVD);
          media13.setIsbn("-");
@@ -190,7 +190,7 @@ public class TestData {
          media13.setTags("Rose Creek, Kopfgeldjäger, Revolverheld, Klassiker, Söldner, Bogue, Geld, gloreich, showdown");
          media13.setGenre(Genre.WESTERN);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media14 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media14 = new Media();
          media14.setTitle("Wüstenblume");
          media14.setType(MediaType.DVD);
          media14.setIsbn("-");
@@ -200,7 +200,7 @@ public class TestData {
          media14.setTags("Afrika, Schicksal, Wüste, Waris, überleben, Vater, Zwangsheirat, Somalien, Nomadenmädchen,  ");
          media14.setGenre(Genre.DRAMA);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media15 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media15 = new Media();
          media15.setTitle("Ice Age 5");
          media15.setType(MediaType.DVD);
          media15.setIsbn("-");
@@ -210,7 +210,7 @@ public class TestData {
          media15.setTags("Scrats,Eichel, Sid, Manni, Buck, Diego, Familie");
          media15.setGenre(Genre.ADVENTURE);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media16 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media16 = new Media();
          media16.setTitle("Poltergeist");
          media16.setType(MediaType.DVD);
          media16.setIsbn("-");
@@ -220,7 +220,7 @@ public class TestData {
          media16.setTags("Familie, Neuverfilmung, fürchten, Attacke, Tochter, Erscheinungen, Madison");
          media16.setGenre(Genre.HORROR);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media17 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media17 = new Media();
          media17.setTitle("TRANSFORMERS 5 - THE LAST KNIGHT");
          media17.setType(MediaType.DVD);
          media17.setIsbn("-");
@@ -230,7 +230,7 @@ public class TestData {
          media17.setTags("Spezies, Krieg, Menschen, Transformers, Optimus Prime, Erde, Rettung, Vergangenheit, Bumblebee, Lord Edmund Burton, Vivien, Izabella");
          media17.setGenre(Genre.ACTION);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media18 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media18 = new Media();
          media18.setTitle("DIE BUCHT");
          media18.setType(MediaType.DVD);
          media18.setIsbn("-");
@@ -240,7 +240,7 @@ public class TestData {
          media18.setTags("Undercover-Mission, Geheimnis, Team, Spezialisten, Tauchern, Surfern, Bucht, Taiji, High-Tech");
          media18.setGenre(Genre.DOCUMENTATION);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media19 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media19 = new Media();
          media19.setTitle("Mädelstrip");
          media19.setType(MediaType.DVD);
          media19.setIsbn("-");
@@ -250,7 +250,7 @@ public class TestData {
          media19.setTags("Urlaub, Emily, Linda, Mutter, Tochter, Weg, Dschungel");
          media19.setGenre(Genre.COMEDY);
 
-         at.fhv.itb.sem5.team6.libman.server.model.Media media20 = new at.fhv.itb.sem5.team6.libman.server.model.Media();
+         Media media20 = new Media();
          media20.setTitle("MAZE RUNNER 1");
          media20.setType(MediaType.DVD);
          media20.setIsbn("-");
