@@ -307,12 +307,16 @@ public class LibraryController {
         lendingRepository.save(lending);
 
         List<Reservation> reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(physicalMedia.getMedia());
-        if (!reservations.isEmpty()) {
+        int reservationsCount = reservations.size();
+        int availableCount = physicalMediaRepository.findDistinctByMediaEqualsAndAvailabilityEqualsOrderByIndexAsc(lending.getPhysicalMedia().getMedia(), Availability.AVAILABLE).size();
+
+        if (!reservations.isEmpty() && reservationsCount >= availableCount) {
+            Reservation reservation = reservations.get(availableCount - 1);
             jmsProducer.send("operators",
                     messageCreator -> messageCreator.createTextMessage(
                             "reserved media "
-                                    + physicalMedia.getMedia().getId() + " is available. Next reservation is from customer "
-                                    + reservations.get(0).getCustomer().getId()
+                                    + physicalMedia.getMedia().getTitle() + " is available. Next reservation is from customer "
+                                    + reservation.getCustomer().getFirstName() + " " + reservation.getCustomer().getLastName() + "."
                     )
             );
         }
