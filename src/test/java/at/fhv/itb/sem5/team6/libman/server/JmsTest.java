@@ -4,6 +4,7 @@ import at.fhv.itb.sem5.team6.libman.server.model.Customer;
 import at.fhv.itb.sem5.team6.libman.server.model.PhysicalMedia;
 import at.fhv.itb.sem5.team6.libman.shared.DTOs.LendingDTO;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,6 +24,7 @@ public class JmsTest extends EmbeddedMongoUnitTest {
     }
 
     @Test
+    @Ignore
     public void onReturnLendingWithReservations() {
         PhysicalMedia physicalMedia = physicalMediaRepository.findAll().get(0);
         List<Customer> customers = customerRepository.findAll().subList(0, 2);
