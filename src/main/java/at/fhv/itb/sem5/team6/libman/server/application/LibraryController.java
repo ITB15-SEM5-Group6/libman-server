@@ -11,15 +11,23 @@ import at.fhv.itb.sem5.team6.libman.shared.enums.LendingState;
 import at.fhv.itb.sem5.team6.libman.shared.enums.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Service
+@RestController
 public class LibraryController {
+    private static final String CUSTOMERS = "/customers";
+    private static final String MEDIAS = "/medias";
+    private static final String MEDIA = MEDIAS + "/{mediaId}";
+    private static final String PHYSICAL_MEDIAS_OF_MEDIA = MEDIA + "/physicalmedias";
+    private static final String PHYSICAL_MEDIA_OF_MEDIA = PHYSICAL_MEDIAS_OF_MEDIA + "/{physicalMediaId}";
+    private static final String RESERVATIONS_OF_MEDIA = MEDIA + "/reservations";
+    private static final String LENDINGS_OF_PHYSICAL_MEDIA = PHYSICAL_MEDIA_OF_MEDIA + "/lendings";
+
     private final JmsTemplate jmsProducer;
     private final JmsConsumer jmsConsumer;
 
@@ -57,6 +65,8 @@ public class LibraryController {
         this.lendingMapper = lendingMapper;
     }
 
+    @RequestMapping(value = MEDIAS, method = RequestMethod.GET)
+    @ResponseBody
     public List<MediaDTO> findMedias() {
         List<Media> medias = mediaRepository.findDistinctByOrderByTypeAscTitleAsc();
         return mediaMapper.toDTOs(medias);
@@ -85,12 +95,16 @@ public class LibraryController {
         return mediaMapper.toDTOs(medias.stream().filter(filter).collect(Collectors.toList()));
     }
 
+    @RequestMapping(value = CUSTOMERS, method = RequestMethod.GET)
+    @ResponseBody
     public List<CustomerDTO> findCustomers() {
         List<Customer> customers = customerRepository.findDistinctByOrderByLastNameAscFirstNameAsc();
         return customerMapper.toDTOs(customers);
     }
 
-    public List<CustomerDTO> findCustomers(String term) {
+    @RequestMapping(value = CUSTOMERS, method = RequestMethod.GET, params = {"term"})
+    @ResponseBody
+    public List<CustomerDTO> findCustomers(@RequestParam(value = "term", required = true) String term) {
         List<Customer> customers = customerRepository.findDistinctByFirstNameLikeOrLastNameLikeOrEmailLikeOrAddressLikeOrPhoneNumberLikeOrBicLikeOrIbanLikeAllIgnoreCaseOrderByLastNameAscFirstNameAsc(term, term, term, term, term, term, term);
         return customerMapper.toDTOs(customers);
     }
@@ -100,8 +114,10 @@ public class LibraryController {
         return physicalMediaMapper.toDTOs(physicalMedias);
     }
 
-    public List<PhysicalMediaDTO> findPhysicalMediasByMedia(String physicalMediaId) {
-        Media media = mediaRepository.findOne(physicalMediaId);
+    @RequestMapping(value = PHYSICAL_MEDIAS_OF_MEDIA, method = RequestMethod.GET)
+    @ResponseBody
+    public List<PhysicalMediaDTO> findPhysicalMediasByMedia(@PathVariable String mediaId) {
+        Media media = mediaRepository.findOne(mediaId);
         List<PhysicalMedia> physicalMedias = physicalMediaRepository.findDistinctByMediaEqualsOrderByIndexAsc(media);
         return physicalMediaMapper.toDTOs(physicalMedias);
     }
@@ -111,7 +127,9 @@ public class LibraryController {
         return reservationMapper.toDTOs(reservations);
     }
 
-    public List<ReservationDTO> findReservationsByMedia(String mediaId) {
+    @RequestMapping(value = RESERVATIONS_OF_MEDIA, method = RequestMethod.GET)
+    @ResponseBody
+    public List<ReservationDTO> findReservationsByMedia(@PathVariable String mediaId) {
         Media media = mediaRepository.findOne(mediaId);
         List<Reservation> reservations = reservationRepository.findDistinctByMediaEqualsOrderByDateAsc(media);
         return reservationMapper.toDTOs(reservations);
@@ -140,7 +158,10 @@ public class LibraryController {
         return lendingMapper.toDTOs(lendings);
     }
 
-    public List<LendingDTO> findLendingsByPhysicalMedia(String physicalMediaId) {
+
+    @RequestMapping(value = LENDINGS_OF_PHYSICAL_MEDIA, method = RequestMethod.GET)
+    @ResponseBody
+    public List<LendingDTO> findLendingsByPhysicalMedia(@PathVariable String physicalMediaId) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
         List<Lending> lendings = lendingRepository.findDistinctByPhysicalMediaEqualsOrderByStateAscLendDateAsc(physicalMedia);
         return lendingMapper.toDTOs(lendings);
@@ -178,7 +199,10 @@ public class LibraryController {
         return lendingMapper.toDTOs(lendings);
     }
 
-    public ReservationDTO reserve(String mediaId, String customerId) {
+
+    @RequestMapping(value = RESERVATIONS_OF_MEDIA, method = RequestMethod.POST, params = {"customerId"})
+    @ResponseBody
+    public ReservationDTO reserve(@PathVariable String mediaId, @RequestParam String customerId) {
         Media media = mediaRepository.findOne(mediaId);
         Customer customer = customerRepository.findOne(customerId);
 
@@ -207,7 +231,9 @@ public class LibraryController {
         reservationRepository.delete(reservationId);
     }
 
-    public LendingDTO lend(String physicalMediaId, String customerId) {
+    @RequestMapping(value = LENDINGS_OF_PHYSICAL_MEDIA, method = RequestMethod.POST, params = {"customerId"})
+    @ResponseBody
+    public LendingDTO lend(@PathVariable String physicalMediaId, @RequestParam String customerId) {
         PhysicalMedia physicalMedia = physicalMediaRepository.findOne(physicalMediaId);
         Customer customer = customerRepository.findOne(customerId);
 
