@@ -18,7 +18,7 @@ import java.util.Hashtable;
 @Service
 public class LibraryFactoryImpl implements ILibraryFactory {
 
-    private final ImmutableSet<String> admins = ImmutableSet.of("trz9858", "cts6638", "afi8826", "mra7219");
+    private final ImmutableSet<String> admins = ImmutableSet.of("tf-test", "trz9858", "cts6638", "afi8826", "mra7219");
     private final ImmutableSet<String> operators = ImmutableSet.of("ade5181");
     private final ImmutableSet<String> employees = ImmutableSet.of("jsc3127");
 
