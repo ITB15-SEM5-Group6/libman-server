@@ -60,7 +60,14 @@ public class LibraryFactoryImpl implements ILibraryFactory {
     }
 
     public void authenticate(String username, String password) throws NamingException {
-        String base = "ou=people,o=fhv.at";
+        String base;
+        if (username.equals("tf-test")) {
+            base = "ou=special,o=fhv.at";
+        } else {
+            base = "ou=people,o=fhv.at";
+        }
+
+
         String dn = "uid=" + username + "," + base;
         String ldapURL = "ldap://openldap.fhv.at";
 
