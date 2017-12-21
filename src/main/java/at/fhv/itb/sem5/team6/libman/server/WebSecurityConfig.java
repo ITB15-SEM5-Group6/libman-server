@@ -3,9 +3,11 @@ package at.fhv.itb.sem5.team6.libman.server;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -25,15 +27,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("hoechst").password("buch").roles("BÜCHEREI").and()
                 .withUser("bregenz").password("buch").roles("BÜCHEREI").and()
                 .withUser("kennelbach").password("buch").roles("BÜCHEREI");
-                /*
-                .ldapAuthentication()
-                .userDnPatterns("uid={0},o=fhv.at")
-                .groupSearchBase("ou=groups")
-                .contextSource()
-                .url("ldap://openldap.fhv.at")
-                .and()
-                .passwordCompare()
-                .passwordAttribute("userPassword");
-                */
     }
 }
