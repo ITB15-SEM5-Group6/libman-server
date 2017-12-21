@@ -65,14 +65,18 @@ public class LibraryController {
         this.lendingMapper = lendingMapper;
     }
 
-    @RequestMapping(value = MEDIAS, method = RequestMethod.GET)
-    @ResponseBody
     public List<MediaDTO> findMedias() {
         List<Media> medias = mediaRepository.findDistinctByOrderByTypeAscTitleAsc();
         return mediaMapper.toDTOs(medias);
     }
 
-    public List<MediaDTO> findMedias(String term, Genre genre, MediaType mediaType, Availability availability) {
+    @RequestMapping(value = MEDIAS, method = RequestMethod.GET)
+    @ResponseBody
+    public List<MediaDTO> findMedias(
+            @RequestParam(value = "term", defaultValue = "") String term,
+            @RequestParam(value = "genre", defaultValue = "ALL") Genre genre,
+            @RequestParam(value = "mediaType", defaultValue = "ALL") MediaType mediaType,
+            @RequestParam(value = "availability", defaultValue = "ALL") Availability availability) {
         List<Media> medias = mediaRepository.findDistinctByTitleLikeOrAuthorLikeOrIsbnLikeOrPublisherLikeAllIgnoreCaseOrderByTypeAscTitleAsc(term, term, term, term);
 
         Predicate<Media> filter = (
