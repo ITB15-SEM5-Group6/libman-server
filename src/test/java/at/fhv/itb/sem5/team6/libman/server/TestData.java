@@ -386,84 +386,84 @@ public class TestData {
         Customer customer5 = new Customer();
         customer5.setFirstName("Peter");
         customer5.setLastName("Draxler");
-        customer3.setAddress("Ritterstraße 6, 6900 Bregenz");
-        customer3.setEmail("peter.draxler@hotmail.com");
-        customer3.setPhoneNumber("069923484733");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer5.setAddress("Ritterstraße 6, 6900 Bregenz");
+        customer5.setEmail("peter.draxler@hotmail.com");
+        customer5.setPhoneNumber("069923484733");
+        customer5.setBic("-");
+        customer5.setIban("-");
 
         Customer customer6 = new Customer();
         customer6.setFirstName("Michael");
         customer6.setLastName("Sturm");
-        customer3.setAddress("Hofstraße 109, 6900 Bregenz");
-        customer3.setEmail("michael.sturm@gmx.at");
-        customer3.setPhoneNumber("069929390445");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer6.setAddress("Hofstraße 109, 6900 Bregenz");
+        customer6.setEmail("michael.sturm@gmx.at");
+        customer6.setPhoneNumber("069929390445");
+        customer6.setBic("-");
+        customer6.setIban("-");
 
 
         Customer customer7 = new Customer();
         customer7.setFirstName("Sarah");
         customer7.setLastName("Greber");
-        customer3.setAddress("Thal 39, 6934 Sulzberg");
-        customer3.setEmail("sarah.greber@aon.at");
-        customer3.setPhoneNumber("066419233443");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer7.setAddress("Thal 39, 6934 Sulzberg");
+        customer7.setEmail("sarah.greber@aon.at");
+        customer7.setPhoneNumber("066419233443");
+        customer7.setBic("-");
+        customer7.setIban("-");
 
         Customer customer8 = new Customer();
         customer8.setFirstName("Öffentliche Bücherei der Gemeinde Kennelbach");
         customer8.setLastName("-");
-        customer3.setAddress("Kirchstraße 17, 6921 Kennelbach");
-        customer3.setEmail("direktion@vskb.snv.at");
-        customer3.setPhoneNumber("0557471732");
-        customer3.setBic("SPBAAT4BXXX");
-        customer3.setIban("AT64 2050 1000 0000 1800");
+        customer8.setAddress("Kirchstraße 17, 6921 Kennelbach");
+        customer8.setEmail("direktion@vskb.snv.at");
+        customer8.setPhoneNumber("0557471732");
+        customer8.setBic("SPBAAT4BXXX");
+        customer8.setIban("AT64 2050 1000 0000 1800");
 
         Customer customer9 = new Customer();
         customer9.setFirstName("Daniela");
         customer9.setLastName("Schwärzler");
-        customer3.setAddress("Zellerweg 2, 6850 Dornbin ");
-        customer3.setEmail("daniela.schwaerzler@gmx.at");
-        customer3.setPhoneNumber("055724938");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer9.setAddress("Zellerweg 2, 6850 Dornbin ");
+        customer9.setEmail("daniela.schwaerzler@gmx.at");
+        customer9.setPhoneNumber("055724938");
+        customer9.setBic("-");
+        customer9.setIban("-");
 
         Customer customer10 = new Customer();
         customer10.setFirstName("Julia");
         customer10.setLastName("Giselbrecht");
-        customer3.setAddress("Feldstraße 40, 6850 Dornbin ");
-        customer3.setEmail("julia.gisbelbrecht@gmx.at");
-        customer3.setPhoneNumber("069923998746");
-        customer3.setBic("");
-        customer3.setIban("-");
+        customer10.setAddress("Feldstraße 40, 6850 Dornbin ");
+        customer10.setEmail("julia.gisbelbrecht@gmx.at");
+        customer10.setPhoneNumber("069923998746");
+        customer10.setBic("");
+        customer10.setIban("-");
 
         Customer customer11 = new Customer();
         customer11.setFirstName("Michaela");
         customer11.setLastName("Knapp");
-        customer3.setAddress("Buchsstraße 1,6850 Dornbin ");
-        customer3.setEmail("michaela.knapp@hotmail.com");
-        customer3.setPhoneNumber("069928374475");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer11.setAddress("Buchsstraße 1,6850 Dornbin ");
+        customer11.setEmail("michaela.knapp@hotmail.com");
+        customer11.setPhoneNumber("069928374475");
+        customer11.setBic("-");
+        customer11.setIban("-");
 
         Customer customer12 = new Customer();
         customer12.setFirstName("Bücherei Höchst");
         customer12.setLastName("-");
-        customer3.setAddress("Franz-Reiter-Straße 19, 6973 Höchst");
-        customer3.setEmail("bvoe@bvoe.at ");
-        customer3.setPhoneNumber("0557876898");
-        customer3.setBic("SPBBAT3BXXX");
-        customer3.setIban("AT64 2020 1000 0000 1800");
+        customer12.setAddress("Franz-Reiter-Straße 19, 6973 Höchst");
+        customer12.setEmail("bvoe@bvoe.at ");
+        customer12.setPhoneNumber("0557876898");
+        customer12.setBic("SPBBAT3BXXX");
+        customer12.setIban("AT64 2020 1000 0000 1800");
 
         Customer customer13 = new Customer();
         customer13.setFirstName("Alexandra");
         customer13.setLastName("Schöffel");
-        customer3.setAddress("Baumstraße 8, 6973 Höchst");
-        customer3.setEmail("alexandra@schöffel.at ");
-        customer3.setPhoneNumber("0557876348");
-        customer3.setBic("-");
-        customer3.setIban("-");
+        customer13.setAddress("Baumstraße 8, 6973 Höchst");
+        customer13.setEmail("alexandra@schöffel.at ");
+        customer13.setPhoneNumber("0557876348");
+        customer13.setBic("-");
+        customer13.setIban("-");
 
         list.add(customer1);
         list.add(customer2);
@@ -480,6 +480,7 @@ public class TestData {
         list.add(customer13);
 
         customerRepository.save(list);
+        int i = 0;
     }
 
     public static void physicalMedia(PhysicalMediaRepository physicalMediaRepository, MediaRepository mediaRepository, int number) {
